@@ -279,31 +279,31 @@ from pandas import DataFrame
 NUMS_MFCC = [2,3,12,20]
 
 VIDEO_URLS = {    
-    #"maggie_rogers":[
-    #    "https://www.youtube.com/watch?v=0dzZXpf7sSQ", # say it
-    #    "https://www.youtube.com/watch?v=q6HiZIQoLSU", # knife
-    #    "https://www.youtube.com/watch?v=bR1d8l92Q8Q", # fallingwater
-    #    "https://www.youtube.com/watch?v=gigJjgPThYA", # overdrive
-    #    "https://www.youtube.com/watch?v=MSFjYe54uv4", # light on
-    #    "https://www.youtube.com/watch?v=yaXAMuhIe7Y", # give a little
-    #    "https://www.youtube.com/watch?v=iKYxMnW7bgs", # love you for a long time
-    #    "https://www.youtube.com/watch?v=IHi5jq2P_Zk", # split stones
-    #    "https://www.youtube.com/watch?v=19ItfuE585w", # alaska (acoustic)
-    #],
-    #"john_mayer": [ 
-    #    # BATTLE STUDIES
-    #    "https://www.youtube.com/watch?v=GeCClzNCfcA", # John Mayer - Heartbreak Warfare (Official Music Video)
-    #    "https://www.youtube.com/watch?v=FgK7vTaJCEM", # All We Ever Do Is Say Goodbye
-    #    "https://www.youtube.com/watch?v=zr6lp-45bOQ", # Half of My Heart
-    #    "https://www.youtube.com/watch?v=KoLc_6BmyTc", # John Mayer - Perfectly Lonely (Official Audio)
-    #    "https://www.youtube.com/watch?v=VDrZww-uHZU", # Assassin
-    #    "https://www.youtube.com/watch?v=5zqRVADxYpM", # Crossroads
-    #    "https://www.youtube.com/watch?v=E3ZAc6WlPYg", # War of My Life
-    #    "https://www.youtube.com/watch?v=Nt-jb5JHWB8", # Edge of Desire
-    #    "https://www.youtube.com/watch?v=cZVT8Zg0YwE", # Do You Know Me
-    #    "https://www.youtube.com/watch?v=LaG0keIFX6o" # Friends, Lovers or Nothing
-    #    # CONTINUUM    
-    #],
+    "maggie_rogers":[
+        "https://www.youtube.com/watch?v=0dzZXpf7sSQ", # say it
+        "https://www.youtube.com/watch?v=q6HiZIQoLSU", # knife
+        "https://www.youtube.com/watch?v=bR1d8l92Q8Q", # fallingwater
+        "https://www.youtube.com/watch?v=gigJjgPThYA", # overdrive
+        "https://www.youtube.com/watch?v=MSFjYe54uv4", # light on
+        "https://www.youtube.com/watch?v=yaXAMuhIe7Y", # give a little
+        "https://www.youtube.com/watch?v=iKYxMnW7bgs", # love you for a long time
+        "https://www.youtube.com/watch?v=IHi5jq2P_Zk", # split stones
+        "https://www.youtube.com/watch?v=19ItfuE585w", # alaska (acoustic)
+    ],
+    "john_mayer": [ 
+        # BATTLE STUDIES
+        "https://www.youtube.com/watch?v=GeCClzNCfcA", # John Mayer - Heartbreak Warfare (Official Music Video)
+        "https://www.youtube.com/watch?v=FgK7vTaJCEM", # All We Ever Do Is Say Goodbye
+        "https://www.youtube.com/watch?v=zr6lp-45bOQ", # Half of My Heart
+        "https://www.youtube.com/watch?v=KoLc_6BmyTc", # John Mayer - Perfectly Lonely (Official Audio)
+        "https://www.youtube.com/watch?v=VDrZww-uHZU", # Assassin
+        "https://www.youtube.com/watch?v=5zqRVADxYpM", # Crossroads
+        "https://www.youtube.com/watch?v=E3ZAc6WlPYg", # War of My Life
+        "https://www.youtube.com/watch?v=Nt-jb5JHWB8", # Edge of Desire
+        "https://www.youtube.com/watch?v=cZVT8Zg0YwE", # Do You Know Me
+        "https://www.youtube.com/watch?v=LaG0keIFX6o" # Friends, Lovers or Nothing
+        # CONTINUUM    
+    ],
     # https://www.youtube.com/channel/UCsdXkstc8jFC3zpMYdEz_zA
     "chris_stapleton":[
          # VOL 2
@@ -406,7 +406,7 @@ for channel_dirname, video_urls in VIDEO_URLS.items():
                         os.makedirs(mfcc_dirpath, exist_ok=True)
 
                         # EXTRACT AUDIO FEATURES
-                        track_mfcc = ytp.mfcc(audio_data=np.array(track30), n_mfcc=n_mfcc)
+                        track_mfcc = ytp.mfcc(audio_data=np.array(track_30s), n_mfcc=n_mfcc)
                         #n_mfcc = track_mfcc.shape[0]
                         mfcc_cols = [f"mfcc_{i}" for i in range(1, n_mfcc+1)]
                         mfcc_df = DataFrame(track_mfcc.T, columns=mfcc_cols)
