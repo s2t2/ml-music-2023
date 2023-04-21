@@ -1,0 +1,20 @@
+
+# downloading audio from youtube:
+pytube
+
+# processing audio:
+librosa
+
+# data processing:
+pandas
+
+# machine learning:
+#sklearn
+#umap
+
+
+
+
+
+# automated tests:
+pytest
