@@ -1,11 +1,18 @@
 
 import os
 
+import numpy as np
+from pandas import DataFrame
+
 import librosa
 from librosa.feature import mfcc, chroma_stft, melspectrogram, spectral_contrast, tonnetz
 from librosa.effects import harmonic
-import numpy as np
 import soundfile as sf
+
+
+import warnings
+warnings.filterwarnings("ignore")
+
 
 
 def split_into_batches(my_list, batch_size=10_000):
@@ -21,10 +28,10 @@ class AudioFeatures:
         self.audio_filepath = audio_filepath
 
         self.audio_filename = self.audio_filepath.split("/")[-1]
-        print(self.audio_filename)
 
         # EXTRACT AUDIO DATA:
         self.audio, self.sample_rate = librosa.load(self.audio_filepath)
+        #self.audio, self.sample_rate = librosa.__audioread_load(self.audio_filepath)
 
     @property
     def sr(self):
@@ -43,6 +50,12 @@ class AudioFeatures:
 
         print(f"MFCC ({n_mfcc})...")
         return mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
+
+    def mfcc_df(self, n_mfcc=12, audio_data=None):
+        the_mfcc = self.mfcc(n_mfcc, audio_data)
+        #n_mfcc = the_mfcc.shape[0]
+        mfcc_cols = [f"mfcc_{i}" for i in range(1, n_mfcc+1)]
+        return DataFrame(the_mfcc.T, columns=mfcc_cols)
 
     #def chroma_stft(self):
     #    print("CHROMA STFT...")
@@ -90,6 +103,8 @@ class AudioFeatures:
             # https://pysoundfile.readthedocs.io/en/latest/#soundfile.write
             sf.write(track_filepath, track_30s, samplerate=self.sr)
 
+        return tracks
+
 
 if __name__ == "__main__":
 
@@ -109,26 +124,26 @@ if __name__ == "__main__":
     audio_filepath = os.path.join(video_dirpath, audio_filename)
 
     af = AudioFeatures(audio_filepath)
-    print(af.audio_filename)
-
-    #print("GENERATING MFCCs...")
-    #the_mfcc = af.mfcc()
-    #print(the_mfcc.shape)
+    print("AUDIO FILE:", af.audio_filename)
 
     print("CUTTING TRACKS...")
-    #sf.available_subtypes("MP3")
-    #sf.available_formats()
-
     tracks_dirpath = os.path.join(video_dirpath, "tracks")
-    af.cut_tracks(tracks_dirpath)
+    tracks = af.cut_tracks(tracks_dirpath)
     print(os.listdir(tracks_dirpath))
 
 
+    #print("GENERATING MFCCs...")
+    video_mfcc = af.mfcc()
+    print(video_mfcc.shape)
+
+    mfcc_df = af.mfcc_df()
+    print(mfcc_df.head())
+
+
     breakpoint()
-
-
     track30 = tracks[0]
-    len(track30)
+    print(len(track30)) #> 661500
+
 
     video_mfcc = ytp.mfcc()
     print(type(video_mfcc), video_mfcc.shape)
