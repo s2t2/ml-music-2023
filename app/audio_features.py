@@ -33,6 +33,10 @@ class AudioFeatures:
         self.audio, self.sample_rate = librosa.load(self.audio_filepath)
         #self.audio, self.sample_rate = librosa.__audioread_load(self.audio_filepath)
 
+        self._tracks = None
+        self._track_names = None
+
+
     @property
     def sr(self):
         """shorthand alias for the sample rate"""
@@ -105,7 +109,34 @@ class AudioFeatures:
 
             track_names.append(track_name)
 
+        self._tracks, self._track_names = tracks, track_names
         return tracks, track_names
+
+    #
+    # SAVE MFCCS
+    #
+
+    def save_mfcc(self, video_dirpath, n_mfcc):
+        mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
+        os.makedirs(mfcc_dirpath, exist_ok=True)
+
+        df = self.mfcc_df(n_mfcc=n_mfcc)
+        csv_filepath = os.path.join(mfcc_dirpath, "full_length.csv")
+        df.to_csv(csv_filepath)
+
+
+    def save_track_mfcc(self, video_dirpath, n_mfcc):
+        """cut tracks first"""
+        mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
+        os.makedirs(mfcc_dirpath, exist_ok=True)
+
+        for track, track_name in zip(self._tracks, self._track_names):
+            csv_filename = track_name.replace(".mp3", ".csv")
+
+            df = self.mfcc_df(n_mfcc=n_mfcc, audio_data=np.array(track))
+            csv_filepath = os.path.join(mfcc_dirpath, csv_filename)
+            df.to_csv(csv_filepath)
+
 
 
 if __name__ == "__main__":
@@ -135,28 +166,31 @@ if __name__ == "__main__":
     print(track_names)
 
     print("GENERATING MFCCs...")
-    n_mfcc = 20
-    mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
-    os.makedirs(mfcc_dirpath, exist_ok=True)
+    #n_mfcc = 20
+    #mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
+    #os.makedirs(mfcc_dirpath, exist_ok=True)
+#
+    #mfcc_df = af.mfcc_df(n_mfcc=n_mfcc)
+    #print(mfcc_df.shape)
+    #print(mfcc_df.head())
+    ##mfcc_filepath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}.csv")
+    #mfcc_filepath = os.path.join(mfcc_dirpath, "full_length.csv")
+    #mfcc_df.to_csv(mfcc_filepath)
+#
+    #track = tracks[0]
+    #print(len(track)) #> 661500
+#
+    ##track_mfcc = af.mfcc(audio_data=np.array(track))
+    ##print(type(track_mfcc), track_mfcc.shape)
+#
+    #track_mfcc_df = af.mfcc_df(audio_data=np.array(track))
+    #print(track_mfcc_df.shape)
+    #print(track_mfcc_df.head())
+#
+    #track_name = track_names[0]
+    #mfcc_filename = track_name.replace(".mp3", ".csv")
+    #track_mfcc_filepath = os.path.join(mfcc_dirpath, mfcc_filename)
+    #track_mfcc_df.to_csv(track_mfcc_filepath)
 
-    mfcc_df = af.mfcc_df(n_mfcc=n_mfcc)
-    print(mfcc_df.shape)
-    print(mfcc_df.head())
-    #mfcc_filepath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}.csv")
-    mfcc_filepath = os.path.join(mfcc_dirpath, "full_length.csv")
-    mfcc_df.to_csv(mfcc_filepath)
-
-    track = tracks[0]
-    print(len(track)) #> 661500
-
-    #track_mfcc = af.mfcc(audio_data=np.array(track))
-    #print(type(track_mfcc), track_mfcc.shape)
-
-    track_mfcc_df = af.mfcc_df(audio_data=np.array(track))
-    print(track_mfcc_df.shape)
-    print(track_mfcc_df.head())
-
-    track_name = track_names[0]
-    mfcc_filename = track_name.replace(".mp3", ".csv")
-    track_mfcc_filepath = os.path.join(mfcc_dirpath, mfcc_filename)
-    track_mfcc_df.to_csv(track_mfcc_filepath)
+    for n_mfcc in [2, 3, 12, 20]:
+        af.save_track_mfcc(video_dirpath=video_dirpath, n_mfcc=n_mfcc)
