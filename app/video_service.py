@@ -5,9 +5,23 @@ import os
 from functools import cached_property
 from pprint import pprint
 
+
+
+
+
+
+
 from pytube import YouTube as Video
+from pytube.exceptions import PytubeError
+
 #import numpy as np
-#from IPython.display import display, Audio, Image
+from IPython.display import display, Audio, Image
+import requests
+from io import BytesIO
+import matplotlib.pyplot as plt
+from PIL import Image as PilImage
+
+
 
 #import warnings
 #warnings.filterwarnings("ignore")
@@ -52,9 +66,31 @@ class VideoService:
         self.audio_filepath = audio_filepath
 
     @cached_property
-    def video(self):
-        # SCRAPE YOUTUBE
-        return Video(self.video_url)
+    def video(self, max_attempts=5):
+        """returns the video or none?"""
+        n_attempts = 0
+        while n_attempts < max_attempts:
+            n_attempts+=1
+            print(f"FETCHING YOUTUBE VIDEO (ATTEMPT #{n_attempts})...")
+            try:
+                v = Video(self.video_url)
+                v.title
+                return v
+                #raise PytubeError("OOPS")
+            except (PytubeError, KeyError) as err:
+                print("ERROR:", err)
+
+
+    def display_thumbnail(self, height=250, notebook=False):
+        if notebook:
+            display(Image(url=self.video.thumbnail_url, height=height))
+        else:
+            response = requests.get(self.video.thumbnail_url)
+            image = PilImage.open(BytesIO(response.content))
+            plt.imshow(image)
+            plt.show()
+
+
 
 
     #def download_audio(self)
@@ -79,10 +115,16 @@ class VideoService:
 if __name__ == "__main__":
 
 
-    yt = YoutubeService()
+    vs = VideoService()
 
-    video = yt.video
-    print("VIDEO:", video.video_id, video.title)
-    print("CHANNEL:", video.channel_url)
+    video = vs.video
+    if video:
+        print("VIDEO ID:", video.video_id)
+        print("TITLE:", video.title)
+        print("AUTHOR:", video.author)
+        print("URL:", video.watch_url)
+        print("LENGTH:", video.length)
+        #print("PUBLISHED:", video.publish_date)
+        #print(video_metadata(video))
 
-    pprint(video_metadata(video))
+        vs.display_thumbnail()

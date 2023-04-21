@@ -2,8 +2,10 @@
 # downloading audio from youtube:
 pytube
 
-# playing audio:
-IPython # does this work locally?
+# displaying images / audio:
+IPython
+matplotlib
+Pillow
 
 # processing audio:
 librosa
