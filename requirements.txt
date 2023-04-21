@@ -2,17 +2,20 @@
 # downloading audio from youtube:
 pytube
 
+# playing audio:
+IPython # does this work locally?
+
 # processing audio:
 librosa
+soundfile
 
 # data processing:
 pandas
+numpy
 
 # machine learning:
 #sklearn
 #umap
-
-
 
 
 
