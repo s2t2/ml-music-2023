@@ -7,6 +7,8 @@ from pprint import pprint
 
 from pytube import YouTube as Video, Channel
 from pytube.exceptions import PytubeError
+from IPython.display import display, Audio, Image
+#from simpleaudio import WaveObject
 
 from app.video_decorators import video_metadata
 from app.image_service import ImageService
@@ -20,7 +22,6 @@ class VideoService:
         self.audio_filepath = None
 
         #self.download_audio()
-
 
     @cached_property
     def video(self, max_attempts=5):
@@ -50,20 +51,25 @@ class VideoService:
 
 
 
-    def display_thumbnail_notebook(self, height=250):
-        ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
 
-    def display_thumbnail_local(self):
-        ImageService(url=self.video.thumbnail_url).display_local()
 
-    #def play_in_colab(self, audio_data=None, image=True):
+    #def display_thumbnail_in_colab(self, height=250):
+    #    ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
+
+    def display_thumbnail(self):
+        ImageService(url=self.video.thumbnail_url).display()
+
+    #def play_audio_in_colab(self, audio_data=None, image=True):
     #    audio_data = audio_data or self.audio_filepath
-    #    if image:
-    #        display(Image(url=self.video.thumbnail_url, height=250))
     #    display(Audio(audio_data, autoplay=False, rate=self.sr)) # rate only necessary when passing custom audio data
 
-    #def play_local(self, audio_data=None, image=True):
-    #    #self.play_in_colab(audio_data, image)
+    #def play_audio(self, audio_filepath=None):
+    #    #playsound(audio_data)
+    #    wave_obj = WaveObject.from_wave_file(audio_filepath or self.audio_filepath)
+    #    play_obj = wave_obj.play()
+    #    play_obj.wait_done()
+
+
 
     #@cached_property
     #def channel(self):
@@ -78,16 +84,17 @@ if __name__ == "__main__":
 
     video = yt.video
     if video:
-        print("VIDEO ID:", video.video_id)
-        print("TITLE:", video.title)
+        print("VIDEO:", video.video_id, video.watch_url)
         print("AUTHOR:", video.author)
-        print("URL:", video.watch_url)
+        print("TITLE:", video.title)
         print("LENGTH:", video.length)
-        #print("PUBLISHED:", video.publish_date)
+        print("VIEWS:", video.views)
         #print(video_metadata(video))
 
-        yt.display_thumbnail_local()
+        yt.display_thumbnail()
 
-        breakpoint()
         audio_filepath = os.path.join(VIDEOS_DIRPATH, video.author.lower(), video.video_id)
         yt.download_audio(audio_filepath=audio_filepath)
+
+        breakpoint()
+        yt.play_audio()

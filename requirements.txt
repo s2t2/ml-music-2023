@@ -2,14 +2,18 @@
 # downloading audio from youtube:
 pytube
 
-# displaying images / audio:
+# displaying images / playing audio:
 IPython
-matplotlib
+requests
 Pillow
+matplotlib
 
-# processing audio:
+
+# processing / playing audio:
+#simpleaudio
 librosa
 soundfile
+#pyaudio
 
 # data processing:
 pandas
