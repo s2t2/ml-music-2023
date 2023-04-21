@@ -1,7 +1,10 @@
 
-#data/*
+
 .DS_Store
 
+content/videos/*/*/*.mp4
+content/videos/*/*/*.mp3
+content/videos/*/*/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

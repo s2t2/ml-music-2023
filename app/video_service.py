@@ -5,65 +5,22 @@ import os
 from functools import cached_property
 from pprint import pprint
 
-
-
-
-
-
-
-from pytube import YouTube as Video
+from pytube import YouTube as Video, Channel
 from pytube.exceptions import PytubeError
 
-#import numpy as np
-from IPython.display import display, Audio, Image
-import requests
-from io import BytesIO
-import matplotlib.pyplot as plt
-from PIL import Image as PilImage
-
-
-
-#import warnings
-#warnings.filterwarnings("ignore")
-
 from app.video_decorators import video_metadata
-
-# you might need to update the path below, or create a shortcut to the path below
-#DATASET_PATH = '/content/drive/MyDrive/Research/DS Research Shared 2023/data/ml_music_2023'
-#print(DATASET_PATH)
-#assert os.path.isdir(DATASET_PATH)
-
-#CHANNELS_DIRPATH = os.path.join(DATASET_PATH, "youtube_channels")
-#print(os.listdir(CHANNELS_DIRPATH))
-
-
-
-
-
-def parse_video_id(video_url):
-    """assumes all video urls are cleanly formatted like https://www.youtube.com/watch?v=ABC123"""
-    return video_url.split("?v=")[-1]
-
-def parse_audio_filename(audio_filepath):
-    """
-    Param audio_filepath like: "/content/Maggie Rogers - The Knife (Live On Austin City Limits).mp4"
-    """
-    return audio_filepath.split("/content/")[-1]
-
-def split_into_batches(my_list, batch_size=10_000):
-    """Splits a list into evenly sized batches"""
-    # h/t: https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks
-    for i in range(0, len(my_list), batch_size):
-        yield my_list[i : i + batch_size]
-
-
+from app.image_service import ImageService
 
 
 class VideoService:
 
-    def __init__(self, video_url="https://www.youtube.com/watch?v=q6HiZIQoLSU", audio_filepath=None):
+    def __init__(self, video_url="https://www.youtube.com/watch?v=q6HiZIQoLSU"):
         self.video_url = video_url
-        self.audio_filepath = audio_filepath
+
+        self.audio_filepath = None
+
+        #self.download_audio()
+
 
     @cached_property
     def video(self, max_attempts=5):
@@ -80,26 +37,24 @@ class VideoService:
             except (PytubeError, KeyError) as err:
                 print("ERROR:", err)
 
+    @cached_property
+    def audio_streams(self):
+        return self.video.streams.filter(only_audio=True, file_extension='mp4').order_by("abr").asc()
 
-    def display_thumbnail(self, height=250, notebook=False):
-        if notebook:
-            display(Image(url=self.video.thumbnail_url, height=height))
-        else:
-            response = requests.get(self.video.thumbnail_url)
-            image = PilImage.open(BytesIO(response.content))
-            plt.imshow(image)
-            plt.show()
+    def download_audio(self, audio_filepath=None):
+        download_params = {"skip_existing": True}
+        if audio_filepath:
+            download_params["output_path"] = audio_filepath
+        self.audio_filepath = self.audio_streams.first().download(**download_params)
+        print("AUDIO FILEPATH:", self.audio_filepath) #> "/content/Maggie Rogers - Say It (Live On The Tonight Show Starring Jimmy Fallon  2019).mp4"
 
 
 
+    def display_thumbnail_notebook(self, height=250):
+        ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
 
-    #def download_audio(self)
-    #    self.audio_streams = self.video.streams.filter(only_audio=True, file_extension='mp4').order_by("abr").asc()
-    #    download_params = {"skip_existing": True}
-    #    if audio_filepath:
-    #        download_params["output_path"] = audio_filepath
-    #    self.audio_filepath = self.audio_streams.first().download(**download_params)
-    #    #print("AUDIO FILEPATH:", self.audio_filepath) # "/content/Maggie Rogers - Say It (Live On The Tonight Show Starring Jimmy Fallon  2019).mp4"
+    def display_thumbnail_local(self):
+        ImageService(url=self.video.thumbnail_url).display_local()
 
     #def play_in_colab(self, audio_data=None, image=True):
     #    audio_data = audio_data or self.audio_filepath
@@ -110,14 +65,18 @@ class VideoService:
     #def play_local(self, audio_data=None, image=True):
     #    #self.play_in_colab(audio_data, image)
 
-
+    #@cached_property
+    #def channel(self):
+    #    return Channel(self.video.channel_url)
 
 if __name__ == "__main__":
 
 
-    vs = VideoService()
+    VIDEOS_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "videos")
 
-    video = vs.video
+    yt = VideoService()
+
+    video = yt.video
     if video:
         print("VIDEO ID:", video.video_id)
         print("TITLE:", video.title)
@@ -127,4 +86,8 @@ if __name__ == "__main__":
         #print("PUBLISHED:", video.publish_date)
         #print(video_metadata(video))
 
-        vs.display_thumbnail()
+        yt.display_thumbnail_local()
+
+        breakpoint()
+        audio_filepath = os.path.join(VIDEOS_DIRPATH, video.author.lower(), video.video_id)
+        yt.download_audio(audio_filepath=audio_filepath)
