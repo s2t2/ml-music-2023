@@ -6,9 +6,9 @@ content/youtube/*/*/*.mp4
 content/youtube/*/*/*.mp3
 content/youtube/*/*/*.csv
 
-content/youtube/*/*/tracks/*.mp4
-content/youtube/*/*/tracks/*.mp3
-content/youtube/*/*/tracks/*.csv
+content/youtube/*/*/*/*.mp4
+content/youtube/*/*/*/*.mp3
+content/youtube/*/*/*/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

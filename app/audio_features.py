@@ -95,6 +95,7 @@ class AudioFeatures:
 
     def cut_tracks(self, tracks_dirpath):
         tracks = self.tracks()
+        track_names = []
         os.makedirs(tracks_dirpath, exist_ok=True)
         for i, track_30s in enumerate(tracks):
             track_name = f"track_{i+1}.mp3"
@@ -102,7 +103,9 @@ class AudioFeatures:
             # https://pysoundfile.readthedocs.io/en/latest/#soundfile.write
             sf.write(track_filepath, track_30s, samplerate=self.sr)
 
-        return tracks
+            track_names.append(track_name)
+
+        return tracks, track_names
 
 
 if __name__ == "__main__":
@@ -127,13 +130,21 @@ if __name__ == "__main__":
 
     print("CUTTING TRACKS...")
     tracks_dirpath = os.path.join(video_dirpath, "tracks")
-    tracks = af.cut_tracks(tracks_dirpath)
-    print(os.listdir(tracks_dirpath))
+    tracks, track_names = af.cut_tracks(tracks_dirpath)
+    #track_names = sorted([fname for fname in os.listdir(tracks_dirpath) if fname.endswith(".mp3")])
+    print(track_names)
 
     print("GENERATING MFCCs...")
-    mfcc_df = af.mfcc_df()
+    n_mfcc = 20
+    mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
+    os.makedirs(mfcc_dirpath, exist_ok=True)
+
+    mfcc_df = af.mfcc_df(n_mfcc=n_mfcc)
     print(mfcc_df.shape)
     print(mfcc_df.head())
+    #mfcc_filepath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}.csv")
+    mfcc_filepath = os.path.join(mfcc_dirpath, "full_length.csv")
+    mfcc_df.to_csv(mfcc_filepath)
 
     track = tracks[0]
     print(len(track)) #> 661500
@@ -144,3 +155,8 @@ if __name__ == "__main__":
     track_mfcc_df = af.mfcc_df(audio_data=np.array(track))
     print(track_mfcc_df.shape)
     print(track_mfcc_df.head())
+
+    track_name = track_names[0]
+    mfcc_filename = track_name.replace(".mp3", ".csv")
+    track_mfcc_filepath = os.path.join(mfcc_dirpath, mfcc_filename)
+    track_mfcc_df.to_csv(track_mfcc_filepath)
