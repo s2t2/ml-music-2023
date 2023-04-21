@@ -2,9 +2,13 @@
 
 .DS_Store
 
-content/videos/*/*/*.mp4
-content/videos/*/*/*.mp3
-content/videos/*/*/*.csv
+content/youtube/*/*/*.mp4
+content/youtube/*/*/*.mp3
+content/youtube/*/*/*.csv
+
+content/youtube/*/*/tracks/*.mp4
+content/youtube/*/*/tracks/*.mp3
+content/youtube/*/*/tracks/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -52,12 +52,12 @@ class VideoService:
 
 
 
-
     #def display_thumbnail_in_colab(self, height=250):
     #    ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
 
     def display_thumbnail(self):
         ImageService(url=self.video.thumbnail_url).display()
+
 
     #def play_audio_in_colab(self, audio_data=None, image=True):
     #    audio_data = audio_data or self.audio_filepath
@@ -70,15 +70,18 @@ class VideoService:
     #    play_obj.wait_done()
 
 
-
     #@cached_property
     #def channel(self):
     #    return Channel(self.video.channel_url)
 
+
+
+
+
 if __name__ == "__main__":
 
 
-    VIDEOS_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "videos")
+    VIDEOS_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "youtube")
 
     yt = VideoService()
 
@@ -96,5 +99,6 @@ if __name__ == "__main__":
         audio_filepath = os.path.join(VIDEOS_DIRPATH, video.author.lower(), video.video_id)
         yt.download_audio(audio_filepath=audio_filepath)
 
-        breakpoint()
-        yt.play_audio()
+        print(yt.audio_filepath)
+        #breakpoint()
+        #yt.play_audio()
