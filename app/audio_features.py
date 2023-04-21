@@ -48,7 +48,7 @@ class AudioFeatures:
         if not isinstance(audio_data, np.ndarray):
             audio_data = self.audio
 
-        print(f"MFCC ({n_mfcc})...")
+        #print(f"MFCC ({n_mfcc})...")
         return mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
 
     def mfcc_df(self, n_mfcc=12, audio_data=None):
@@ -93,7 +93,6 @@ class AudioFeatures:
         else:
             return all_tracks
 
-
     def cut_tracks(self, tracks_dirpath):
         tracks = self.tracks()
         os.makedirs(tracks_dirpath, exist_ok=True)
@@ -124,37 +123,24 @@ if __name__ == "__main__":
     audio_filepath = os.path.join(video_dirpath, audio_filename)
 
     af = AudioFeatures(audio_filepath)
-    print("AUDIO FILE:", af.audio_filename)
+    print("AUDIO:", af.audio_filename)
 
     print("CUTTING TRACKS...")
     tracks_dirpath = os.path.join(video_dirpath, "tracks")
     tracks = af.cut_tracks(tracks_dirpath)
     print(os.listdir(tracks_dirpath))
 
-
-    #print("GENERATING MFCCs...")
-    video_mfcc = af.mfcc()
-    print(video_mfcc.shape)
-
+    print("GENERATING MFCCs...")
     mfcc_df = af.mfcc_df()
+    print(mfcc_df.shape)
     print(mfcc_df.head())
 
+    track = tracks[0]
+    print(len(track)) #> 661500
 
-    breakpoint()
-    track30 = tracks[0]
-    print(len(track30)) #> 661500
+    #track_mfcc = af.mfcc(audio_data=np.array(track))
+    #print(type(track_mfcc), track_mfcc.shape)
 
-
-    video_mfcc = ytp.mfcc()
-    print(type(video_mfcc), video_mfcc.shape)
-
-    track_array = np.array(track30)
-    isinstance(track_array, np.ndarray)
-
-    #np.array(track30) or "five"
-
-    track_mfcc = ytp.mfcc(audio_data=np.array(track30))
-
-    print(type(track_mfcc), track_mfcc.shape)
-
-    track_mfcc.shape[0]
+    track_mfcc_df = af.mfcc_df(audio_data=np.array(track))
+    print(track_mfcc_df.shape)
+    print(track_mfcc_df.head())
