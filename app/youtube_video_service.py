@@ -12,21 +12,19 @@ from pytube.exceptions import PytubeError
 from IPython.display import display, Audio, Image
 #from simpleaudio import WaveObject
 
+from app import YOUTUBE_DIRPATH, download_json
 from app.video_decorators import video_metadata
 from app.image_service import ImageService
 
 
-DATASET_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "youtube")
+VIDEO_URL = os.getenv("VIDEO_URL", default="https://www.youtube.com/watch?v=q6HiZIQoLSU")
 
 
-class VideoService:
+class YoutubeVideoService():
 
-    def __init__(self, video_url="https://www.youtube.com/watch?v=q6HiZIQoLSU"):
+    def __init__(self, video_url=VIDEO_URL):
         self.video_url = video_url
-
         self.audio_filepath = None
-
-        #self.download_audio()
 
     @cached_property
     def video(self, max_attempts=5):
@@ -46,29 +44,40 @@ class VideoService:
                 sleep(1)
 
     @cached_property
+    def channel(self):
+        return Channel(self.video.channel_url)
+
+    @cached_property
     def audio_streams(self):
         return self.video.streams.filter(only_audio=True, file_extension='mp4').order_by("abr").asc()
 
+    @cached_property
+    def video_dirpath(self, artist_name=None):
+        if not artist_name:
+            default_artist_name = self.video.author.lower()
+            artist_name = input(f"What is the artist name you would like to save this video under ({default_artist_name})? ") or default_artist_name
+
+        dirpath = os.path.join(YOUTUBE_DIRPATH, artist_name, self.video.video_id)
+        os.makedirs(dirpath, exist_ok=True)
+        return dirpath
+
+    def download_metadata(self, download_dirpath=None):
+        download_dirpath = download_dirpath or self.video_dirpath
+        metadata_filepath = os.path.join(self.video_dirpath, "video.json")
+        download_json(data=video_metadata(self.video, as_json=True), json_filepath=metadata_filepath)
+
     def download_audio(self, download_dirpath=None):
-        download_params = {"skip_existing": True}
-        if download_dirpath:
-            download_params["output_path"] = download_dirpath
+        download_dirpath = download_dirpath or self.video_dirpath
+        download_params = {"skip_existing": True, "output_path": download_dirpath}
         self.audio_filepath = self.audio_streams.first().download(**download_params)
         #print("AUDIO FILEPATH:", self.audio_filepath) #> "/content/Maggie Rogers - Say It (Live On The Tonight Show Starring Jimmy Fallon  2019).mp4"
 
-    def download_metadata(self, download_dirpath):
-        data = video_metadata(self.video, as_json=True)
-        os.makedirs(download_dirpath, exist_ok=True)
-        json_filepath = os.path.join(download_dirpath, "metadata.json")
-        with open(json_filepath, "w") as json_file:
-            json.dump(data, json_file)
 
     #def display_thumbnail_in_colab(self, height=250):
     #    ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
 
     def display_thumbnail(self):
         ImageService(url=self.video.thumbnail_url).display()
-
 
     #def play_audio_in_colab(self, audio_data=None, image=True):
     #    audio_data = audio_data or self.audio_filepath
@@ -81,9 +90,8 @@ class VideoService:
     #    play_obj.wait_done()
 
 
-    #@cached_property
-    #def channel(self):
-    #    return Channel(self.video.channel_url)
+
+
 
 
 
@@ -91,7 +99,8 @@ class VideoService:
 
 if __name__ == "__main__":
 
-    yt = VideoService()
+
+    yt = YoutubeVideoService()
 
     video = yt.video
     if video:
@@ -101,15 +110,12 @@ if __name__ == "__main__":
         print("LENGTH:", video.length)
         print("VIEWS:", video.views)
 
-        # todo: more standard channel directories
-        video_dirpath = os.path.join(DATASET_DIRPATH, video.author.lower(), video.video_id)
-
-        print("DOWNLOADING METADATA...")
-        yt.download_metadata(download_dirpath=video_dirpath)
-
         yt.display_thumbnail()
 
+        print("DOWNLOADING METADATA...")
+        yt.download_metadata()
+
         print("DOWNLOADING AUDIO...")
-        yt.download_audio(download_dirpath=video_dirpath)
+        yt.download_audio()
 
         #yt.play_audio()

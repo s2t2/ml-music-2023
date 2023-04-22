@@ -20,13 +20,18 @@ pip install -r requirements.txt
 
 Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle. Unzip, as necessary. Rename the unzipped folder as "gtzan" and move it into the "data" directory.
 
-Generate MFCCs from the raw audio files, optionally specifying the number of MFCCs (uses 20 by default, to match provided GTZAN CSV file):
+Generate MFCCs from the raw audio files, optionally specifying the track length in seconds (e.g. 3, 30), and the number of MFCCs (uses 20 by default, to match provided GTZAN CSV file):
 
 ```sh
-N_MFCC=2 python -m app.jobs.process_gtzan_audio
-N_MFCC=3 python -m app.jobs.process_gtzan_audio
-N_MFCC=13 python -m app.jobs.process_gtzan_audio
-N_MFCC=20 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=2 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=3 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=20 python -m app.jobs.process_gtzan_audio
+
+TRACK_LENGTH=30 N_MFCC=2 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=30 N_MFCC=3 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_audio
 ```
 
 This will create a corresponding JSON file in the "gtzan" directory, with a record per track, and the mfcc dimensions for each track will be 1292 rows by N_MFCC cols:
@@ -44,7 +49,11 @@ This will create a corresponding JSON file in the "gtzan" directory, with a reco
 Train a neural network on this data:
 
 ```sh
-N_MFCC=20 python -m app.jobs.train_gtzan_nn
+TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 ```
 
-## Usage
+### YouTube
+
+```sh
+python -m app.youtube_video_service
+```

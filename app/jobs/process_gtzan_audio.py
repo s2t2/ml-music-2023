@@ -6,7 +6,7 @@ import numpy as np
 from pandas import DataFrame
 
 from app import GTZAN_DIRPATH
-from app.audio_features import AudioFeatures as AudioProcessor
+from app.audio_features import AudioFeatures as AudioProcessor, TRACK_LENGTH
 
 GENRES_DIRPATH = os.path.join(GTZAN_DIRPATH, "genres_original")
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
                 ap = AudioProcessor(audio_filepath)
 
                 #track = ap.audio
-                tracks = ap.tracks()
+                tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
                 track = np.array(tracks[0]) # trim longer songs at 30 seconds!
 
                 mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
@@ -52,7 +52,6 @@ if __name__ == "__main__":
             except Exception as err:
                 print("... ERR:", audio_filename, err)
 
-
     results_df = DataFrame(results)
     results_df.drop(columns=["mfcc"], inplace=True) # drop column with nested data
     print(results_df.head())
@@ -63,19 +62,19 @@ if __name__ == "__main__":
     print("N MFCC:")
     print(results_df["mfcc_cols"].value_counts())
 
-    csv_filepath = os.path.join(GTZAN_DIRPATH, f"mfcc_{N_MFCC}_summary.csv")
-    results_df.to_csv(csv_filepath, index=False)
-
     #
     # SAVE MFCC RECORDS
     #
 
-    json_filepath = os.path.join(GTZAN_DIRPATH, f"mfcc_{N_MFCC}.json")
+    FEATURES_DIR = os.path.join(GTZAN_DIRPATH, f"features_{TRACK_LENGTH}s")
 
+    #csv_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}_summary.csv")
+    #results_df.to_csv(csv_filepath, index=False)
+
+    json_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}.json")
     for row in results:
         row["mfcc"] = row["mfcc"].tolist() # numpy not serializable
         del row["track_length"]
         del row["mfcc_rows"]
         del row["mfcc_cols"]
-
     ap.save_json(json_filepath, results)
