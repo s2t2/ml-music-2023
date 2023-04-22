@@ -10,7 +10,7 @@ from app.audio_features import AudioFeatures as AudioProcessor
 
 GENRES_DIRPATH = os.path.join(GTZAN_DIRPATH, "genres_original")
 
-N_MFCC = os.getenv("N_MFCC", default=20)
+N_MFCC = int(os.getenv("N_MFCC", default=20))
 
 
 
@@ -72,7 +72,10 @@ if __name__ == "__main__":
 
     json_filepath = os.path.join(GTZAN_DIRPATH, f"mfcc_{N_MFCC}.json")
 
-    json_results = results
-    for row in json_results:
+    for row in results:
         row["mfcc"] = row["mfcc"].tolist() # numpy not serializable
-    ap.save_json(json_filepath, json_results)
+        del row["track_length"]
+        del row["mfcc_rows"]
+        del row["mfcc_cols"]
+
+    ap.save_json(json_filepath, results)

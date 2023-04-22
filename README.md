@@ -16,28 +16,18 @@ pip install -r requirements.txt
 
 ## Datasets
 
-GTZAN:
+### GTZAN
 
-  1. Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle. And unzip, as necessary.
-  2. Rename the folder as "gtzan" and move it into the "data" directory.
+Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle. Unzip, as necessary. Rename the unzipped folder as "gtzan" and move it into the "data" directory.
+
+Generate MFCCs from the raw audio files, optionally specifying the number of MFCCs (uses 20 by default, to match provided GTZAN CSV file):
+
+```sh
+N_MFCC=2 python -m app.jobs.process_gtzan_audio
+N_MFCC=3 python -m app.jobs.process_gtzan_audio
+N_MFCC=13 python -m app.jobs.process_gtzan_audio
+N_MFCC=13 python -m app.jobs.process_gtzan_audio
+```
 
 
 ## Usage
-
-Download audio files:
-
-```sh
-python -m app.jobs.download_audio
-```
-
-Compile audio features:
-
-```sh
-python -m app.jobs.process_audio
-```
-
-Train and save genre classifier models:
-
-```sh
-python -m app.jobs.train_models
-```
