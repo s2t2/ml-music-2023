@@ -21,6 +21,7 @@ numpy
 
 # machine learning:
 scikit-learn
+category_encoders
 tensorflow
 #umap
 
