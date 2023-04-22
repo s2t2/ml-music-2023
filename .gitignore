@@ -3,10 +3,9 @@
 .DS_Store
 
 content/youtube/*/*/*.mp4
-content/youtube/*/*/*.mp3
 content/youtube/*/*/*.csv
+content/youtube/*/*/*.json
 
-content/youtube/*/*/*/*.mp4
 content/youtube/*/*/*/*.mp3
 content/youtube/*/*/*/*.csv
 

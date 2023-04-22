@@ -4,7 +4,12 @@ from pytube import YouTube
 # for pytube video objects
 
 
-def video_metadata(video:YouTube):
+def video_metadata(video:YouTube, as_json=False):
+
+    publish_date = video.publish_date
+    if as_json:
+        publish_date = str(publish_date)
+
     return {
 
         'video_id': video.video_id,
@@ -16,7 +21,7 @@ def video_metadata(video:YouTube):
 
         'keywords': video.keywords,
         'length': video.length,
-        'publish_date': video.publish_date,
+        'publish_date': publish_date,
         'rating': video.rating,
         'views': video.views,
 

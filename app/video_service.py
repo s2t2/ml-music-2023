@@ -3,7 +3,9 @@
 
 import os
 from functools import cached_property
+from time import sleep
 from pprint import pprint
+import json
 
 from pytube import YouTube as Video, Channel
 from pytube.exceptions import PytubeError
@@ -12,6 +14,9 @@ from IPython.display import display, Audio, Image
 
 from app.video_decorators import video_metadata
 from app.image_service import ImageService
+
+
+DATASET_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "youtube")
 
 
 class VideoService:
@@ -29,28 +34,34 @@ class VideoService:
         n_attempts = 0
         while n_attempts < max_attempts:
             n_attempts+=1
-            print(f"FETCHING YOUTUBE VIDEO (ATTEMPT #{n_attempts})...")
+            #print(f"FETCHING YOUTUBE VIDEO (ATTEMPT #{n_attempts})...")
+            #print("...")
             try:
+                #raise PytubeError("OOPS")
                 v = Video(self.video_url)
                 v.title
                 return v
-                #raise PytubeError("OOPS")
             except (PytubeError, KeyError) as err:
-                print("ERROR:", err)
+                #print("ERROR:", err)
+                sleep(1)
 
     @cached_property
     def audio_streams(self):
         return self.video.streams.filter(only_audio=True, file_extension='mp4').order_by("abr").asc()
 
-    def download_audio(self, audio_filepath=None):
+    def download_audio(self, download_dirpath=None):
         download_params = {"skip_existing": True}
-        if audio_filepath:
-            download_params["output_path"] = audio_filepath
+        if download_dirpath:
+            download_params["output_path"] = download_dirpath
         self.audio_filepath = self.audio_streams.first().download(**download_params)
-        print("AUDIO FILEPATH:", self.audio_filepath) #> "/content/Maggie Rogers - Say It (Live On The Tonight Show Starring Jimmy Fallon  2019).mp4"
+        #print("AUDIO FILEPATH:", self.audio_filepath) #> "/content/Maggie Rogers - Say It (Live On The Tonight Show Starring Jimmy Fallon  2019).mp4"
 
-
-
+    def download_metadata(self, download_dirpath):
+        data = video_metadata(self.video, as_json=True)
+        os.makedirs(download_dirpath, exist_ok=True)
+        json_filepath = os.path.join(download_dirpath, "metadata.json")
+        with open(json_filepath, "w") as json_file:
+            json.dump(data, json_file)
 
     #def display_thumbnail_in_colab(self, height=250):
     #    ImageService(url=self.video.thumbnail_url).display_notebook(height=height)
@@ -80,9 +91,6 @@ class VideoService:
 
 if __name__ == "__main__":
 
-
-    VIDEOS_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "content", "youtube")
-
     yt = VideoService()
 
     video = yt.video
@@ -92,13 +100,16 @@ if __name__ == "__main__":
         print("TITLE:", video.title)
         print("LENGTH:", video.length)
         print("VIEWS:", video.views)
-        #print(video_metadata(video))
+
+        # todo: more standard channel directories
+        video_dirpath = os.path.join(DATASET_DIRPATH, video.author.lower(), video.video_id)
+
+        print("DOWNLOADING METADATA...")
+        yt.download_metadata(download_dirpath=video_dirpath)
 
         yt.display_thumbnail()
 
-        audio_filepath = os.path.join(VIDEOS_DIRPATH, video.author.lower(), video.video_id)
-        yt.download_audio(audio_filepath=audio_filepath)
+        print("DOWNLOADING AUDIO...")
+        yt.download_audio(download_dirpath=video_dirpath)
 
-        print(yt.audio_filepath)
-        #breakpoint()
         #yt.play_audio()
