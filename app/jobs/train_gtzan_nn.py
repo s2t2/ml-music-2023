@@ -25,15 +25,18 @@ from app import GTZAN_DIRPATH
 
 N_MFCC = int(os.getenv("N_MFCC", default=20))
 
-TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.3))
+VAL_SIZE = float(os.getenv("VAL_SIZE", default=0.2))
+TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.1))
 
+# TODO: customize LAYER_SIZES "512,256,64"
+# os.getenv("N_EPOCHS", default=50))
 N_EPOCHS = int(os.getenv("N_EPOCHS", default=50))
 LAMBDA = float(os.getenv("LAMBDA", default=0.001))
-DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.1))
+DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.15))
 LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
 
 
-def load_gtzan_mfcc(n_mfcc, encode_labels=True):
+def load_gtzan_mfcc(n_mfcc=N_MFCC, encode_labels=True):
 
     print("LOADING DATA...")
     json_filepath = os.path.join(GTZAN_DIRPATH, f"mfcc_{n_mfcc}.json")
@@ -67,30 +70,42 @@ def load_gtzan_mfcc(n_mfcc, encode_labels=True):
     return x, y
 
 
-def train_model(x_train, y_train, x_test, y_test,
-                #layer_sizes=[512, 256, 64],
+def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
+                layer_sizes=[512, 256, 64],
                 l2_lambda=LAMBDA, dropout_rate=DROPOUT_RATE,
                 learning_rate=LEARNING_RATE, n_epochs=N_EPOCHS
     ):
 
-    model = Sequential([
-        # input layer:
-        # ... x shape is (n_tracks, 1292, 20), so we are specifying the shape of the individual mfcc features:
-        Flatten(input_shape=(x.shape[1], x.shape[2])),
+    print("-----------------------")
+    print("THREE WAY SPLIT...")
+    # roll your own three way split, get the ratios right first, remaining goes into training set size
+    n_samples = len(x)
+    val_size = int(n_samples * val_size)
+    test_size = int(n_samples * test_size)
 
-        # dense layers:
-        Dense(512, activation="relu", kernel_regularizer=l2(l2_lambda)),
-        Dropout(dropout_rate, seed=99),
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=99)
+    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=val_size, random_state=99)
+    print("X TRAIN:", x_train.shape)
+    print("Y TRAIN:", y_train.shape)
+    print("X VAL:", x_val.shape)
+    print("Y VAL:", y_val.shape)
+    print("X TEST:", x_test.shape)
+    print("Y TEST:", y_test.shape)
 
-        Dense(256, activation="relu", kernel_regularizer=l2(l2_lambda)),
-        Dropout(dropout_rate, seed=99),
 
-        Dense(64, activation="relu", kernel_regularizer=l2(l2_lambda)),
-        Dropout(dropout_rate, seed=99),
-
-        # output layer:
-        Dense(10, activation="softmax")
-    ])
+    print("-----------------------")
+    print("MODEL ARCHITECTURE...")
+    # x shape is (n_tracks, 1292, 20), so we are specifying the shape of the individual mfcc features:
+    input_layer = Flatten(input_shape=(x.shape[1], x.shape[2]))
+    hidden_layers = []
+    for n_units in layer_sizes:
+       hidden_layers += [
+            Dense(n_units, activation="relu", kernel_regularizer=l2(l2_lambda)),
+            Dropout(dropout_rate, seed=99)
+       ]
+    output_layer = Dense(10, activation="softmax")
+    layers = [input_layer] + hidden_layers + [output_layer]
+    model = Sequential(layers)
 
     # compile model:
     model.compile(
@@ -100,41 +115,37 @@ def train_model(x_train, y_train, x_test, y_test,
     )
     model.summary()
 
-    # train model:
+
+    print("-----------------------")
+    print("MODEL TRAINING...")
+
     history = model.fit(x_train, y_train, batch_size=32, epochs=n_epochs,
-        validation_data=(x_test, y_test),
+        validation_data=(x_val, y_val),
         #callbacks=[EarlyStopping(monitor="loss", patience=10)]
     )
 
-    # plot results:
+
+    print("-----------------------")
+    print("MODEL EVALUATION...")
+
     history_df = DataFrame({
         "train_accy": history.history["accuracy"],
         "val_accy": history.history["val_accuracy"]
     })
     history_df["epoch"] = history_df.index + 1
 
-    title = f"GTZAN Genre Classifier (Neural Net) <br><sup>Params: test_size={TEST_SIZE}, dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}</sup>"
+    test_err, test_accy = model.evaluate(x_test, y_test)
+    test_accy = round(test_accy, 4)
+    print("ACCY (TEST):", test_accy)
+
+    title = f"GTZAN Genre Classifier (Neural Net) <br><sup>Test Accy: {test_accy}</sup> <br><sup>Params: val_size={val_size} test_size={test_size}, dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}</sup>"
     fig = px.line(history_df, x="epoch", y=["train_accy", "val_accy"], title=title)
     fig.show()
 
-    ## Evaluate the model on the test set
-    #test_err, test_acc = model.evaluate(x_test, y_test)
-    #print("ACCY TEST:", test_acc)
-    #print("ERR TEST:", test_err)
 
 
 if __name__ == "__main__":
 
-    x, y = load_gtzan_mfcc(n_mfcc=N_MFCC)
+    x, y = load_gtzan_mfcc()
 
-    print("-----------------------")
-    print("TRAIN TEST SPLIT...")
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=TEST_SIZE, random_state=99)
-    print("X TRAIN:", x_train.shape)
-    print("Y TRAIN:", y_train.shape)
-    print("X TEST:", x_test.shape)
-    print("Y TEST:", y_test.shape)
-
-    print("-----------------------")
-    print("TRAINING NEURAL NETWORK FOR GENRE CLASSIFICATION...")
-    train_model(x_train, y_train, x_test, y_test)
+    train_model(x, y)
