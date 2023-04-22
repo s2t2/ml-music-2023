@@ -1,5 +1,6 @@
 
 import os
+import json
 
 import numpy as np
 from pandas import DataFrame
@@ -56,9 +57,6 @@ class AudioFeatures:
         return mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
 
     def mfcc_df(self, n_mfcc=12, audio_data=None):
-        if not isinstance(audio_data, np.ndarray):
-            audio_data = self.audio
-
         the_mfcc = self.mfcc(n_mfcc, audio_data)
         #n_mfcc = the_mfcc.shape[0]
         mfcc_cols = [f"mfcc_{i}" for i in range(1, n_mfcc+1)]
@@ -119,6 +117,11 @@ class AudioFeatures:
     #
     # SAVE MFCCS
     #
+
+    def save_json(self, json_filepath, data):
+        with open(json_filepath, "w") as json_file:
+            json.dump(data, json_file)
+
 
     def save_mfcc(self, video_dirpath, n_mfcc):
         mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
