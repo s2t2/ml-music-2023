@@ -7,7 +7,7 @@ IPython
 requests
 Pillow
 matplotlib
-
+plotly
 
 # processing / playing audio:
 #simpleaudio

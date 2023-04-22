@@ -11,16 +11,19 @@ from pandas import DataFrame, Series
 from sklearn.model_selection import train_test_split
 from category_encoders import OneHotEncoder #, OrdinalEncoder
 
-import tensorflow as tf
+#import tensorflow as tf
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, Flatten, Dropout
 from tensorflow.keras.optimizers import Adam
+#from tensorflow.keras.callbacks import EarlyStopping
+
+import plotly.express as px
 
 from app import GTZAN_DIRPATH
 
+
 N_MFCC = int(os.getenv("N_MFCC", default=20))
 N_EPOCHS = int(os.getenv("N_EPOCHS", default=50))
-
 
 
 def load_gtzan_mfcc(n_mfcc, encode_labels=True):
@@ -57,35 +60,6 @@ def load_gtzan_mfcc(n_mfcc, encode_labels=True):
     return x, y
 
 
-
-#def train_model(x_train, y_train, x_val, y_val, x_test, y_test, n_epochs=10, learning_rate=0.0001):
-#    """Train using three way split """
-#
-#    # Define the model
-#    model = Sequential([
-#        Dense(64, activation="relu", input_shape=(x_train.shape[1],)),
-#        Dense(32, activation="relu"),
-#        Dense(10, activation="softmax")
-#    ])
-#
-#    # Compile the model
-#    # model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-#    optimizer = Adam(learning_rate=learning_rate)
-#    model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
-#
-#    # Train the model
-#    history = model.fit(x_train, y_train, epochs=n_epochs, validation_data=(x_val, y_val))
-#
-#    # Evaluate the model on the test set
-#    test_err, test_acc = model.evaluate(x_test, y_test)
-#    print("ACCY TEST:", test_acc)
-#    print("ERR TEST:", test_err)
-#
-#    # Return the trained model and the history object
-#    return model, history
-#
-
-
 if __name__ == "__main__":
 
     x, y = load_gtzan_mfcc(n_mfcc=N_MFCC)
@@ -113,15 +87,30 @@ if __name__ == "__main__":
     ])
 
     # compile model:
-    optimizer = Adam(learning_rate=0.0001)
     model.compile(
-        optimizer=optimizer,
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
+        optimizer=Adam(learning_rate=0.0001),
+        loss="categorical_crossentropy", # use with one-hot encoded labels
+        metrics=["accuracy"]
     )
     model.summary()
 
     # train model:
-    history = model.fit(x_train, y_train, validation_data=(x_test, y_test), batch_size=32, epochs=N_EPOCHS)
+    history = model.fit(x_train, y_train, batch_size=32, epochs=N_EPOCHS,
+        validation_data=(x_test, y_test),
+        #callbacks=[EarlyStopping(monitor="loss", patience=5)]
+    )
 
-    breakpoint()
+    history_df = DataFrame({
+        "epoch": range(1, N_EPOCHS+1),
+        "train_accy": history.history["accuracy"],
+        "val_accy": history.history["val_accuracy"]
+    })
+    fig = px.line(history_df, x="epoch", y=["train_accy", "val_accy"],
+        title="GTZAN Genre Classifier (Neural Net)",
+    )
+    fig.show()
+
+    ## Evaluate the model on the test set
+    #test_err, test_acc = model.evaluate(x_test, y_test)
+    #print("ACCY TEST:", test_acc)
+    #print("ERR TEST:", test_err)
