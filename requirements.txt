@@ -20,7 +20,8 @@ pandas
 numpy
 
 # machine learning:
-#sklearn
+scikit-learn
+tensorflow
 #umap
 
 
