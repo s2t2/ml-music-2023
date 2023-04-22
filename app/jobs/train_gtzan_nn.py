@@ -23,10 +23,10 @@ import plotly.express as px
 from app import GTZAN_DIRPATH
 
 
-N_MFCC = int(os.getenv("N_MFCC", default=20))
+N_MFCC = int(os.getenv("N_MFCC", default=13))
 
-VAL_SIZE = float(os.getenv("VAL_SIZE", default=0.2))
-TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.1))
+VAL_SIZE = float(os.getenv("VAL_SIZE", default=0.15))
+TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.10))
 
 # TODO: customize LAYER_SIZES "512,256,64"
 # os.getenv("N_EPOCHS", default=50))
@@ -34,6 +34,7 @@ N_EPOCHS = int(os.getenv("N_EPOCHS", default=50))
 LAMBDA = float(os.getenv("LAMBDA", default=0.001))
 DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.15))
 LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
+
 
 
 def load_gtzan_mfcc(n_mfcc=N_MFCC, encode_labels=True):
@@ -138,7 +139,11 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
     test_accy = round(test_accy, 4)
     print("ACCY (TEST):", test_accy)
 
-    title = f"GTZAN Genre Classifier (Neural Net) <br><sup>Test Accy: {test_accy}</sup> <br><sup>Params: val_size={val_size} test_size={test_size}, dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}</sup>"
+    title = f"""GTZAN Genre Classifier - Neural Net (30s tracks, {N_MFCC} MFCCs)
+        <br><sup>Splits: val_size={val_size}, test_size={test_size}</sup>
+        <br><sup>Params: dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}</sup>
+        <br><sup>Test Accy: {test_accy}</sup>
+    """
     fig = px.line(history_df, x="epoch", y=["train_accy", "val_accy"], title=title)
     fig.show()
 
