@@ -14,6 +14,14 @@ conda activate
 pip install -r requirements.txt
 ```
 
+## Datasets
+
+GTZAN:
+
+  1. Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle. And unzip, as necessary.
+  2. Rename the folder as "gtzan" and move it into the "data" directory.
+
+
 ## Usage
 
 Download audio files:
