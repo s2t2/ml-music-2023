@@ -36,7 +36,7 @@ N_EPOCHS = int(os.getenv("N_EPOCHS", default=150))
 LAMBDA = float(os.getenv("LAMBDA", default=0.001))
 DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.15))
 LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
-PATIENCE = int(os.getenv("PATIENCE", default=25))
+PATIENCE = int(os.getenv("PATIENCE", default=15))
 
 
 
@@ -74,13 +74,17 @@ def load_gtzan_mfcc(track_length=TRACK_LENGTH, n_mfcc=N_MFCC, encode_labels=True
     return x, y
 
 
-def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
+def train_model(x, y, x_scale=True, val_size=VAL_SIZE, test_size=TEST_SIZE,
                 layer_sizes=[512, 256, 64],
                 l2_lambda=LAMBDA, dropout_rate=DROPOUT_RATE,
                 learning_rate=LEARNING_RATE, n_epochs=N_EPOCHS, patience=PATIENCE
     ):
     """
         Params:
+
+            x (np.array) : training features, with shape like (n_tracks, track_length, n_mfcc)
+
+            y (np.array) : training labels
 
             l2_lambda (float) : L2 regularization penalty, keras default is 0.01
                         https://www.tensorflow.org/api_docs/python/tf/keras/regularizers/L2#arguments
@@ -96,13 +100,23 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
             patience (int) : Number of epochs to wait before early stopping, if better performance is not achieved.
 
     """
+
+    if x_scale:
+        print("-----------------------")
+        print("FEATURE SCALING...")
+        # x shape is like (n_tracks, track_length, n_mfcc)
+        x = (x - x.mean()) / x.std()
+        print("X SCALED - MEAN:", x.mean())
+        print("X SCALED - VAR:", x.var())
+        print("X SCALED - STD:", x.std())
+
+
     print("-----------------------")
     print("THREE WAY SPLIT...")
     # get the ratios right first, remaining goes into training set size
     n_samples = len(x)
     _val_size = int(n_samples * val_size)
     _test_size = int(n_samples * test_size)
-
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=_test_size, shuffle=True, random_state=99)
     x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=_val_size, shuffle=True, random_state=99)
     print("X TRAIN:", x_train.shape)
@@ -159,8 +173,8 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
     print("ACCY (TEST):", test_accy)
 
     title = f"""GTZAN Genre Classifier - Neural Net ({TRACK_LENGTH}s tracks, {N_MFCC} MFCCs)
-        <br><sup>Test Accy: {test_accy} | Splits: {1 - val_size - test_size} / {val_size} / {test_size}</sup>
-        <br><sup>Params: dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}, patience={patience}</sup>
+        <br><sup>Test Accy: {test_accy}</sup>
+        <br><sup>Splits: {1 - val_size - test_size} / {val_size} / {test_size} | Params: dropout_rate={dropout_rate}, l2_penalty={l2_lambda}, learning_rate={learning_rate}, patience={patience}</sup>
     """
 
     fig = px.line(history_df, x="epoch", y=["train_accy", "val_accy"], title=title)
