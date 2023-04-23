@@ -5,8 +5,8 @@ import librosa
 import numpy as np
 from pandas import DataFrame
 
-from app import GTZAN_DIRPATH, save_json
-from app.audio_features import AudioFeatures as AudioProcessor, TRACK_LENGTH
+from app import GTZAN_DIRPATH, download_json
+from app.audio_processor import AudioProcessor, TRACK_LENGTH
 
 GENRES_DIRPATH = os.path.join(GTZAN_DIRPATH, "genres_original")
 
@@ -33,27 +33,28 @@ if __name__ == "__main__":
 
                 #track = ap.audio
                 tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
-                track = np.array(tracks[0]) # trim longer songs at 30 seconds!
+                for track in tracks:
+                    track = np.array(track)
 
-                mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
-                mfcc = mfcc.T
+                    mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
+                    mfcc = mfcc.T
 
-                #print(audio_filename, track.shape, mfcc.shape)
-                results.append({
-                    "genre": genre,
-                    "audio_filename": audio_filename,
-                    "track_length": len(track),
-                    "mfcc_rows": mfcc.shape[0], # related to the track length
-                    "mfcc_cols": mfcc.shape[1], # should equal n_mfcc
-                    "mfcc": mfcc
-                })
+                    #print(audio_filename, track.shape, mfcc.shape)
+                    results.append({
+                        "genre": genre,
+                        "audio_filename": audio_filename,
+                        "track_length": len(track),
+                        "mfcc_rows": mfcc.shape[0], # related to the track length
+                        "mfcc_cols": mfcc.shape[1], # should equal n_mfcc
+                        "mfcc": mfcc
+                    })
 
-                #ap.save_mfcc(genre, audio_filename, mfcc)
             except Exception as err:
                 print("... ERR:", audio_filename, err)
 
     results_df = DataFrame(results)
     results_df.drop(columns=["mfcc"], inplace=True) # drop column with nested data
+    print("TRACKS:", len(results_df))
     print(results_df.head())
 
     print("TRACK LENGTHS:")
@@ -67,6 +68,7 @@ if __name__ == "__main__":
     #
 
     FEATURES_DIR = os.path.join(GTZAN_DIRPATH, f"features_{TRACK_LENGTH}s")
+    os.makedirs(FEATURES_DIR, exist_ok=True)
 
     #csv_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}_summary.csv")
     #results_df.to_csv(csv_filepath, index=False)

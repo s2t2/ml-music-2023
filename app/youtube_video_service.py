@@ -90,15 +90,7 @@ class YoutubeVideoService():
     #    play_obj.wait_done()
 
 
-
-
-
-
-
-
-
 if __name__ == "__main__":
-
 
     yt = YoutubeVideoService()
 

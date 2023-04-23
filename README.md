@@ -59,3 +59,9 @@ python -m app.youtube_video_service
 ```
 
 ## Generic Utilities
+
+## Testing
+
+```sh
+pytest
+```

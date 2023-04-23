@@ -9,6 +9,8 @@ def test_video_service():
     video = yt.video
     assert isinstance(video, Video)
 
+    assert any(yt.audio_streams)
+
 
 
 
