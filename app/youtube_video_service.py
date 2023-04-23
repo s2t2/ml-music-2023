@@ -22,8 +22,9 @@ VIDEO_URL = os.getenv("VIDEO_URL", default="https://www.youtube.com/watch?v=q6Hi
 
 class YoutubeVideoService():
 
-    def __init__(self, video_url=VIDEO_URL):
+    def __init__(self, video_url=VIDEO_URL, artist_name=None):
         self.video_url = video_url
+        self.artist_name = artist_name
         self.audio_filepath = None
 
     @cached_property
@@ -52,12 +53,12 @@ class YoutubeVideoService():
         return self.video.streams.filter(only_audio=True, file_extension='mp4').order_by("abr").asc()
 
     @cached_property
-    def video_dirpath(self, artist_name=None):
-        if not artist_name:
+    def video_dirpath(self):
+        if not self.artist_name:
             default_artist_name = self.video.author.lower()
-            artist_name = input(f"What is the artist name you would like to save this video under ({default_artist_name})? ") or default_artist_name
+            self.artist_name = input(f"What is the artist name you would like to save this video under ({default_artist_name})? ") or default_artist_name
 
-        dirpath = os.path.join(YOUTUBE_DIRPATH, artist_name, self.video.video_id)
+        dirpath = os.path.join(YOUTUBE_DIRPATH, self.artist_name, self.video.video_id)
         os.makedirs(dirpath, exist_ok=True)
         return dirpath
 

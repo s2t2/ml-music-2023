@@ -25,11 +25,13 @@ Generate MFCCs from the raw audio files, optionally specifying the track length 
 ```sh
 TRACK_LENGTH=3 N_MFCC=2 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=3 N_MFCC=3 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=8 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=3 N_MFCC=20 python -m app.jobs.process_gtzan_audio
 
 TRACK_LENGTH=30 N_MFCC=2 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=30 N_MFCC=3 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=30 N_MFCC=8 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_audio
 TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_audio
 ```
@@ -43,8 +45,19 @@ TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 
 ### YouTube
 
+Test the YouTube service on one video:
+
 ```sh
 python -m app.youtube_video_service
+# VIDEO_URL="" python -m app.youtube_video_service
+```
+
+
+Extract all the videos:
+
+
+```sh
+python -m app.jobs.download_youtube_audio
 ```
 
 ## Generic Utilities
