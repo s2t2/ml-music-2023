@@ -12,7 +12,8 @@ from pytube.exceptions import PytubeError
 from IPython.display import display, Audio, Image
 #from simpleaudio import WaveObject
 
-from app import YOUTUBE_DIRPATH, download_json
+from app import download_json
+from app.youtube_dataset import YOUTUBE_AUDIO_DIRPATH
 from app.video_decorators import video_metadata
 from app.image_service import ImageService
 
@@ -58,7 +59,7 @@ class YoutubeVideoService():
             default_artist_name = self.video.author.lower()
             self.artist_name = input(f"What is the artist name you would like to save this video under ({default_artist_name})? ") or default_artist_name
 
-        dirpath = os.path.join(YOUTUBE_DIRPATH, self.artist_name, self.video.video_id)
+        dirpath = os.path.join(YOUTUBE_AUDIO_DIRPATH, self.artist_name, self.video.video_id)
         os.makedirs(dirpath, exist_ok=True)
         return dirpath
 

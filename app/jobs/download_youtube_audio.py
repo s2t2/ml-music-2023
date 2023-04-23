@@ -1,7 +1,6 @@
 
 import os
 
-from app import YOUTUBE_DIRPATH
 from app.youtube_video_service import YoutubeVideoService
 
 

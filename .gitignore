@@ -6,11 +6,11 @@ data/gtzan/*.csv
 data/gtzan/genres_original/*/*.wav
 data/gtzan/images_original/*/*.png
 
-data/youtube/*/*/*.mp4
-data/youtube/*/*/*.csv
-data/youtube/*/*/*.json
-data/youtube/*/*/*/*.mp3
-data/youtube/*/*/*/*.csv
+data/youtube/audio/*/*/*.mp4
+data/youtube/audio/*/*/*.csv
+data/youtube/audio/*/*/*.json
+data/youtube/audio/*/*/*/*.mp3
+data/youtube/audio/*/*/*/*.csv
 
 data/gtzan/
 

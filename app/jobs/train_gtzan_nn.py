@@ -36,7 +36,7 @@ N_EPOCHS = int(os.getenv("N_EPOCHS", default=150))
 LAMBDA = float(os.getenv("LAMBDA", default=0.001))
 DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.15))
 LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
-PATIENCE = int(os.getenv("PATIENCE", default=15))
+PATIENCE = int(os.getenv("PATIENCE", default=10))
 
 
 

@@ -10,10 +10,11 @@ from librosa.feature import mfcc, chroma_stft, melspectrogram, spectral_contrast
 from librosa.effects import harmonic
 import soundfile as sf
 
-from app import YOUTUBE_DIRPATH, GTZAN_DIRPATH
+from app import GTZAN_DIRPATH
+from app.youtube_dataset import YoutubeDataset
 
-#import warnings
-#warnings.filterwarnings("ignore")
+import warnings
+warnings.filterwarnings("ignore")
 
 
 TRACK_LENGTH = int(os.getenv("TRACK_LENGTH", default=30)) # in seconds
@@ -160,23 +161,12 @@ if __name__ == "__main__":
     print("Let's grab an example audio file to process...")
     dataset_name = input("Please choose a dataset ('gtzan', 'youtube'): ") or "gtzan"
     print("DATASET:", dataset_name)
-
     if dataset_name == "gtzan":
         audio_filepath = os.path.join(GTZAN_DIRPATH, "genres_original", "pop", "pop.00000.wav")
     elif dataset_name == "youtube":
-        channel_names = [fname for fname in os.listdir(YOUTUBE_DIRPATH) if fname not in [".DS_Store"]]
-        channel_name = channel_names[0]
-        #print("CHANNEL:", channel_name.upper())
-        channel_dirpath = os.path.join(YOUTUBE_DIRPATH, channel_name)
-        video_ids = [fname for fname in os.listdir(channel_dirpath) if fname not in [".DS_Store"]]
-        video_id = video_ids[0]
-        #print("VIDEO:", video_id)
-        video_dirpath = os.path.join(channel_dirpath, video_id)
-        audio_filenames = [fname for fname in os.listdir(video_dirpath) if fname.endswith(".mp4")]
-        audio_filename = audio_filenames[0]
-        audio_filepath = os.path.join(video_dirpath, audio_filename)
-
-
+        ds = YoutubeDataset()
+        artist_name = input("Choose an artist name: ") or None
+        audio_filepath = ds.take_audio_filepath(artist_name)
 
     ap = AudioProcessor(audio_filepath)
     print("AUDIO:", ap.audio_filename)
