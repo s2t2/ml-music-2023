@@ -7,8 +7,6 @@ import json
 
 DATA_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "data")
 
-GTZAN_DIRPATH = os.path.join(DATA_DIRPATH, "gtzan")
-
 
 
 def download_json(data, json_filepath):

@@ -10,7 +10,6 @@ from librosa.feature import mfcc, chroma_stft, melspectrogram, spectral_contrast
 from librosa.effects import harmonic
 import soundfile as sf
 
-from app import GTZAN_DIRPATH
 from app.youtube_dataset import YoutubeDataset
 
 import warnings
@@ -157,6 +156,8 @@ class AudioProcessor:
 
 if __name__ == "__main__":
 
+
+    from app.gtzan_dataset import GTZAN_DIRPATH
 
     print("Let's grab an example audio file to process...")
     dataset_name = input("Please choose a dataset ('gtzan', 'youtube'): ") or "gtzan"

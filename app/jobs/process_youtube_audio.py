@@ -28,7 +28,8 @@ if __name__ == "__main__":
         try:
             ap = AudioProcessor(audio_filepath)
 
-            for track in ap.tracks(track_length_seconds=TRACK_LENGTH):
+            tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
+            for i, track in enumerate(tracks):
                 track = np.array(track)
 
                 mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
@@ -38,6 +39,7 @@ if __name__ == "__main__":
                 results.append({
                     #"artist_name": artist_name,
                     "audio_filename": audio_filename,
+                    "track_number": i+1,
                     "track_length": len(track),
                     "mfcc_rows": mfcc.shape[0], # related to the track length
                     "mfcc_cols": mfcc.shape[1], # should equal n_mfcc
@@ -65,8 +67,8 @@ if __name__ == "__main__":
     FEATURES_DIR = os.path.join(YOUTUBE_DIRPATH, f"features_{TRACK_LENGTH}s")
     os.makedirs(FEATURES_DIR, exist_ok=True)
 
-    #csv_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}_summary.csv")
-    #results_df.to_csv(csv_filepath, index=False)
+    csv_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}_details.csv")
+    results_df.to_csv(csv_filepath, index=False)
 
     json_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}.json")
     for row in results:

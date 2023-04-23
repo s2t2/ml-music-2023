@@ -3,10 +3,11 @@ import os
 import numpy as np
 from pandas import DataFrame
 
-from app import GTZAN_DIRPATH, download_json
+from app import download_json
+from app.gtzan_dataset import GTZAN_DIRPATH, GENRES_DIRPATH #, GenresDataset
 from app.audio_processor import AudioProcessor, TRACK_LENGTH
 
-GENRES_DIRPATH = os.path.join(GTZAN_DIRPATH, "genres_original")
+
 
 N_MFCC = int(os.getenv("N_MFCC", default=20))
 
@@ -14,6 +15,7 @@ N_MFCC = int(os.getenv("N_MFCC", default=20))
 
 if __name__ == "__main__":
 
+    # todo: move logic into GenresDataset
     GENRES = sorted([genre for genre in os.listdir(GENRES_DIRPATH) if genre not in [".DS_Store"]])
     print("GENRES:", GENRES)
 
