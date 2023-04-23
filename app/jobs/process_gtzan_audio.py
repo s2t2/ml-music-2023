@@ -5,7 +5,7 @@ import librosa
 import numpy as np
 from pandas import DataFrame
 
-from app import GTZAN_DIRPATH
+from app import GTZAN_DIRPATH, save_json
 from app.audio_features import AudioFeatures as AudioProcessor, TRACK_LENGTH
 
 GENRES_DIRPATH = os.path.join(GTZAN_DIRPATH, "genres_original")
@@ -77,4 +77,4 @@ if __name__ == "__main__":
         del row["track_length"]
         del row["mfcc_rows"]
         del row["mfcc_cols"]
-    ap.save_json(json_filepath, results)
+    download_json(results, json_filepath)

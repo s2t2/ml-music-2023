@@ -57,3 +57,5 @@ TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 ```sh
 python -m app.youtube_video_service
 ```
+
+## Generic Utilities

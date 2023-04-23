@@ -124,9 +124,9 @@ class AudioProcessor:
     # SAVE MFCCS
     #
 
-    def save_json(self, json_filepath, data):
-        with open(json_filepath, "w") as json_file:
-            json.dump(data, json_file)
+    #def save_json(self, json_filepath, data):
+    #    with open(json_filepath, "w") as json_file:
+    #        json.dump(data, json_file)
 
 
     #def save_mfcc(self, video_dirpath, n_mfcc):
