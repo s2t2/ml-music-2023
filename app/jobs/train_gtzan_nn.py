@@ -2,6 +2,8 @@
 # https://www.youtube.com/watch?v=_xcFAiufwd0
 # https://github.com/musikalkemist/DeepLearningForAudioWithPython/blob/master/13-%20Implementing%20a%20neural%20network%20for%20music%20genre%20classification/code/mlp_genre_classifier.py
 
+# todo: tuning
+# https://www.tensorflow.org/tensorboard/hyperparameter_tuning_with_hparams
 
 import os
 import json
@@ -16,11 +18,12 @@ from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.regularizers import l2
-#from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 
 import plotly.express as px
 
 from app import GTZAN_DIRPATH
+from app.audio_processor import TRACK_LENGTH
 
 
 N_MFCC = int(os.getenv("N_MFCC", default=13))
@@ -28,19 +31,19 @@ N_MFCC = int(os.getenv("N_MFCC", default=13))
 VAL_SIZE = float(os.getenv("VAL_SIZE", default=0.15))
 TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.10))
 
-# TODO: customize LAYER_SIZES "512,256,64"
-# os.getenv("N_EPOCHS", default=50))
-N_EPOCHS = int(os.getenv("N_EPOCHS", default=50))
+# LAYER_SIZES = [int(n) for n in os.getenv("LAYER_SIZES", default="512,256,64").split(",") ]
+N_EPOCHS = int(os.getenv("N_EPOCHS", default=150))
 LAMBDA = float(os.getenv("LAMBDA", default=0.001))
 DROPOUT_RATE = float(os.getenv("DROPOUT_RATE", default=0.15))
 LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
+PATIENCE = int(os.getenv("PATIENCE", default=25))
 
 
 
-def load_gtzan_mfcc(n_mfcc=N_MFCC, encode_labels=True):
+def load_gtzan_mfcc(track_length=TRACK_LENGTH, n_mfcc=N_MFCC, encode_labels=True):
 
     print("LOADING DATA...")
-    json_filepath = os.path.join(GTZAN_DIRPATH, f"mfcc_{n_mfcc}.json")
+    json_filepath = os.path.join(GTZAN_DIRPATH, f"features_{track_length}s", f"mfcc_{n_mfcc}.json")
     print(os.path.abspath(json_filepath))
     with open(json_filepath, "r") as json_file:
         data = json.load(json_file)
@@ -74,18 +77,34 @@ def load_gtzan_mfcc(n_mfcc=N_MFCC, encode_labels=True):
 def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
                 layer_sizes=[512, 256, 64],
                 l2_lambda=LAMBDA, dropout_rate=DROPOUT_RATE,
-                learning_rate=LEARNING_RATE, n_epochs=N_EPOCHS
+                learning_rate=LEARNING_RATE, n_epochs=N_EPOCHS, patience=PATIENCE
     ):
+    """
+        Params:
 
+            l2_lambda (float) : L2 regularization penalty, keras default is 0.01
+                        https://www.tensorflow.org/api_docs/python/tf/keras/regularizers/L2#arguments
+
+            learning_rate (float) : Adam learning rate, keras default is 0.001
+                        https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam
+
+            dropout_rate (float) :  Float between 0 and 1. Fraction of the input units to drop.
+                        https://www.tensorflow.org/api_docs/python/tf/keras/layers/Dropout
+
+            n_epochs (int) : Number of epochs for training.
+
+            patience (int) : Number of epochs to wait before early stopping, if better performance is not achieved.
+
+    """
     print("-----------------------")
     print("THREE WAY SPLIT...")
-    # roll your own three way split, get the ratios right first, remaining goes into training set size
+    # get the ratios right first, remaining goes into training set size
     n_samples = len(x)
-    val_size = int(n_samples * val_size)
-    test_size = int(n_samples * test_size)
+    _val_size = int(n_samples * val_size)
+    _test_size = int(n_samples * test_size)
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=99)
-    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=val_size, random_state=99)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=_test_size, shuffle=True, random_state=99)
+    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=_val_size, shuffle=True, random_state=99)
     print("X TRAIN:", x_train.shape)
     print("Y TRAIN:", y_train.shape)
     print("X VAL:", x_val.shape)
@@ -96,7 +115,7 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
 
     print("-----------------------")
     print("MODEL ARCHITECTURE...")
-    # x shape is (n_tracks, 1292, 20), so we are specifying the shape of the individual mfcc features:
+    # x shape is like (n_tracks, track_length, n_mfcc), so we are specifying the shape of the individual mfcc features:
     input_layer = Flatten(input_shape=(x.shape[1], x.shape[2]))
     hidden_layers = []
     for n_units in layer_sizes:
@@ -122,7 +141,7 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
 
     history = model.fit(x_train, y_train, batch_size=32, epochs=n_epochs,
         validation_data=(x_val, y_val),
-        #callbacks=[EarlyStopping(monitor="loss", patience=10)]
+        callbacks=[EarlyStopping(monitor="loss", patience=patience)]
     )
 
 
@@ -139,11 +158,11 @@ def train_model(x, y, val_size=VAL_SIZE, test_size=TEST_SIZE,
     test_accy = round(test_accy, 4)
     print("ACCY (TEST):", test_accy)
 
-    title = f"""GTZAN Genre Classifier - Neural Net (30s tracks, {N_MFCC} MFCCs)
-        <br><sup>Splits: val_size={val_size}, test_size={test_size}</sup>
-        <br><sup>Params: dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}</sup>
-        <br><sup>Test Accy: {test_accy}</sup>
+    title = f"""GTZAN Genre Classifier - Neural Net ({TRACK_LENGTH}s tracks, {N_MFCC} MFCCs)
+        <br><sup>Test Accy: {test_accy} | Splits: {1 - val_size - test_size} / {val_size} / {test_size}</sup>
+        <br><sup>Params: dropout_rate={dropout_rate}, l2_lambda={l2_lambda}, learning_rate={learning_rate}, patience={patience}</sup>
     """
+
     fig = px.line(history_df, x="epoch", y=["train_accy", "val_accy"], title=title)
     fig.show()
 
