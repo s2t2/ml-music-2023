@@ -5,24 +5,23 @@ from concurrent.futures import ThreadPoolExecutor, as_completed # see: https://d
 import numpy as np
 from pandas import DataFrame
 
-from app.gtzan_dataset import GenreDataset, GTZAN_DIRPATH, GENRES_DIRPATH
+from app.gtzan_dataset import GenreDataset, GTZAN_DIRPATH, GENRES_DIRPATH, AudioFile
 from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC, split_into_batches
 
 
 MAX_THREADS = int(os.getenv("MAX_THREADS", default=5)) # the max number of threads to use, for concurrent processing
 
 
-def process_audio_async(audio_filepath):
-    genre = audio_filepath.split("/")[-2]
-    audio_filename = audio_filepath.split("/")[-1]
+def process_audio_async(audio_file:AudioFile):
+    audio_filename = audio_file.audio_filename #audio_filepath.split("/")[-1]
     print(f"{current_thread().name} PROCESSING AUDIO -- {audio_filename}")
 
     records = []
     try:
-        ap = AudioProcessor(audio_filepath)
+        ap = AudioProcessor(audio_file.audio_filepath)
         tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
         for track in tracks:
-            track_info = {"genre": genre, "audio_filename": audio_filename, "track_length": len(track)}
+            track_info = {"genre": audio_file.genre, "audio_filename": audio_filename, "track_length": len(track)}
             #records.append(track_info)
             track_features = ap.audio_features(n_mfcc=N_MFCC, audio_data=np.array(track))
             records.append({**track_info, **track_features})
@@ -48,12 +47,10 @@ if __name__ == "__main__":
     records = []
     with ThreadPoolExecutor(max_workers=MAX_THREADS, thread_name_prefix="THREAD") as executor:
 
-        futures = [executor.submit(process_audio_async, audio_filepath) for audio_filepath in ds.audio_filepaths]
+        futures = [executor.submit(process_audio_async, audio_file) for audio_file in ds.audio_files]
         print("AUDIO FILES TO BE PROCESSED:", len(futures))
         for future in as_completed(futures):
-            result = future.result()
-            #print(result)
-            records += result
+            records += future.result()
 
     print("----------------")
     print("ASYNC PERFORMANCE COMPLETE...")
