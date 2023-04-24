@@ -5,8 +5,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed # see: https://d
 import numpy as np
 from pandas import DataFrame
 
-from app.gtzan_dataset import GenreDataset, GTZAN_DIRPATH, GENRES_DIRPATH, AudioFile
-from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC, split_into_batches
+from app.gtzan_dataset import GenreDataset, AudioFile
+from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC #, split_into_batches
 
 
 MAX_THREADS = int(os.getenv("MAX_THREADS", default=5)) # the max number of threads to use, for concurrent processing
@@ -65,11 +65,9 @@ if __name__ == "__main__":
 
     print("TRACK LENGTHS:")
     print(results_df["track_length"].value_counts())
+    #assert len(results_df["track_length"].unique()) == 1
 
     # SAVE FEATURE RECORDS
 
-    FEATURES_DIR = os.path.join(GTZAN_DIRPATH, f"features_{TRACK_LENGTH}s")
-    os.makedirs(FEATURES_DIR, exist_ok=True)
-
-    csv_filepath = os.path.join(FEATURES_DIR, f"features_mfcc_{N_MFCC}.csv")
+    csv_filepath = ds.features_csv_filepath(track_length=TRACK_LENGTH, n_mfcc=N_MFCC)
     results_df.to_csv(csv_filepath, index=False)

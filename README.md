@@ -27,25 +27,22 @@ Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.ka
 There is a CSV file of provided audio features. This data can be used for normal machine learning models. We can optionally recreate our own (mostly similar) versions of the provided data, specifying different track lengths and number of MFCCs:
 
 ```sh
-TRACK_LENGTH=3 N_MFCC=2   python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=3 N_MFCC=3   python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=3 N_MFCC=20  python -m app.jobs.process_gtzan_features_async
 
-TRACK_LENGTH=30 N_MFCC=2  python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=30 N_MFCC=3  python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=30 N_MFCC=8  python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_features_async
 TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_features_async
 ```
 
 
-Dimensionality reduction:
+Dimensionality reduction on summary features:
 
 ```sh
-TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.reduce_gtzan_features
-TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.reduce_gtzan_features
+TRACK_LENGTH=3 N_MFCC=8   N_COMPONENTS=2 python -m app.jobs.reduce_gtzan_features
+TRACK_LENGTH=3 N_MFCC=13  N_COMPONENTS=2 python -m app.jobs.reduce_gtzan_features
+TRACK_LENGTH=3 N_MFCC=20  N_COMPONENTS=2 python -m app.jobs.reduce_gtzan_features
 ```
 
 
@@ -55,14 +52,10 @@ TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.reduce_gtzan_features
 Generate MFCCs from the raw audio files, optionally specifying the track length in seconds, and the number of MFCCs:
 
 ```sh
-TRACK_LENGTH=3 N_MFCC=2   python -m app.jobs.process_gtzan_mfcc
-TRACK_LENGTH=3 N_MFCC=3   python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=3 N_MFCC=20  python -m app.jobs.process_gtzan_mfcc
 
-TRACK_LENGTH=30 N_MFCC=2  python -m app.jobs.process_gtzan_mfcc
-TRACK_LENGTH=30 N_MFCC=3  python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=30 N_MFCC=8  python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_mfcc
 TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_mfcc
