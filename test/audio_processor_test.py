@@ -38,10 +38,7 @@ def test_audio_processor(ap):
 
 
 def test_audio_features(ap):
-
-    features = ap.audio_features(n_mfcc=13)
-    assert isinstance(features, dict)
-    assert list(features.keys()) == [
+    expected_feature_names = [
         'tempo',
         'chroma_stft_mean', 'chroma_stft_var',
         'rms_mean', 'rms_var',
@@ -64,8 +61,19 @@ def test_audio_features(ap):
         'mfcc_12_mean', 'mfcc_12_var',
         'mfcc_13_mean', 'mfcc_13_var'
     ]
+
+    # uses entire audio by default
+    features = ap.audio_features(n_mfcc=13)
+    assert isinstance(features, dict)
+    assert list(features.keys()) == expected_feature_names
     assert set([str(type(v)) for v in features.values()]) == {
         "<class 'float'>",
         "<class 'numpy.float64'>",
         "<class 'numpy.float32'>"
     } # todo: standardize dtypes
+
+    # handles custom data:
+    track = ap.audio[0:100]
+    track_features = ap.audio_features(n_mfcc=13, audio_data=track)
+    assert isinstance(track_features, dict)
+    assert list(track_features.keys()) == expected_feature_names

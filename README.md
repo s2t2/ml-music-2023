@@ -20,28 +20,66 @@ pip install -r requirements.txt
 
 Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle. Unzip, as necessary. Rename the unzipped folder as "gtzan" and move it into the "data" directory.
 
-Generate MFCCs from the raw audio files, optionally specifying the track length in seconds (e.g. 3, 30), and the number of MFCCs (FYI provided GTZAN features CSV file is based on 20 MFCCs):
+> FYI provided GTZAN features CSV file is based on 20 MFCCs
+
+#### Summary Features
+
+There is a CSV file of provided audio features. This data can be used for normal machine learning models. We can optionally recreate our own (mostly similar) versions of the provided data, specifying different track lengths and number of MFCCs:
 
 ```sh
-TRACK_LENGTH=3 N_MFCC=2 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=3 N_MFCC=3 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=3 N_MFCC=8 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=3 N_MFCC=20 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=3 N_MFCC=2   python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=3 N_MFCC=3   python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=3 N_MFCC=20  python -m app.jobs.process_gtzan_features
 
-TRACK_LENGTH=30 N_MFCC=2 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=30 N_MFCC=3 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=30 N_MFCC=8 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_audio
-TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_audio
+TRACK_LENGTH=30 N_MFCC=2  python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=30 N_MFCC=3  python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=30 N_MFCC=8  python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_features
+TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_features
 ```
 
-Train a neural network on this data:
+
+Dimensionality reduction:
+
+```sh
+TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.reduce_gtzan_features
+TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.reduce_gtzan_features
+```
+
+
+
+#### Raw MFCC Features
+
+Generate MFCCs from the raw audio files, optionally specifying the track length in seconds, and the number of MFCCs:
+
+```sh
+TRACK_LENGTH=3 N_MFCC=2   python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=3 N_MFCC=3   python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=3 N_MFCC=20  python -m app.jobs.process_gtzan_mfcc
+
+TRACK_LENGTH=30 N_MFCC=2  python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=30 N_MFCC=3  python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=30 N_MFCC=8  python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_mfcc
+TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_mfcc
+```
+
+Train a neural network on the raw MFCC data:
 
 ```sh
 TRACK_LENGTH=3 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 ```
+
+
+
+
+
+
 
 ### YouTube
 

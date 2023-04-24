@@ -69,7 +69,8 @@ class AudioProcessor:
         return DataFrame(the_mfcc.T, columns=mfcc_cols)
 
     def audio_features(self, n_mfcc=N_MFCC, n_chroma=1, audio_data=None):
-        audio_data = audio_data or self.audio
+        if not isinstance(audio_data, np.ndarray):
+            audio_data = self.audio
 
         features = {}
 
@@ -171,53 +172,12 @@ class AudioProcessor:
         self._tracks, self._track_names = tracks, track_names
         return tracks, track_names
 
-    #
-    # SAVE MFCCS
-    #
-
-    #def save_json(self, json_filepath, data):
-    #    with open(json_filepath, "w") as json_file:
-    #        json.dump(data, json_file)
-
-
-    #def save_mfcc(self, video_dirpath, n_mfcc):
-    #    mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
-    #    os.makedirs(mfcc_dirpath, exist_ok=True)
-    #
-    #    df = self.mfcc_df(n_mfcc=n_mfcc)
-    #    csv_filepath = os.path.join(mfcc_dirpath, "full_length.csv")
-    #    df.to_csv(csv_filepath)
-
-
-    #def save_track_mfcc(self, video_dirpath, n_mfcc):
-    #    """cut tracks first"""
-    #    mfcc_dirpath = os.path.join(video_dirpath, f"mfcc_{n_mfcc}")
-    #    os.makedirs(mfcc_dirpath, exist_ok=True)
-    #
-    #    for track, track_name in zip(self._tracks, self._track_names):
-    #        csv_filename = track_name.replace(".mp3", ".csv")
-    #
-    #        df = self.mfcc_df(n_mfcc=n_mfcc, audio_data=np.array(track))
-    #        csv_filepath = os.path.join(mfcc_dirpath, csv_filename)
-    #        df.to_csv(csv_filepath)
 
 
 
 if __name__ == "__main__":
 
     pass
-
-    #from conftest import TEST_AUDIO_FILEPATH
-#
-    #ap = AudioProcessor(TEST_AUDIO_FILEPATH)
-#
-    #ap.all_audio_features()
-
-
-
-
-
-
 
     #from app.gtzan_dataset import GTZAN_DIRPATH
     #from app.youtube_dataset import YoutubeDataset

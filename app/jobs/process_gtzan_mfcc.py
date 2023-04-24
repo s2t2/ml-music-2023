@@ -4,18 +4,18 @@ import numpy as np
 from pandas import DataFrame
 
 from app import download_json
-from app.gtzan_dataset import GTZAN_DIRPATH, GENRES_DIRPATH #, GenresDataset
+from app.gtzan_dataset import GenreDataset, GTZAN_DIRPATH, GENRES_DIRPATH #, GenresDataset
 from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC
 
 
 if __name__ == "__main__":
 
-    # todo: move logic into GenresDataset
-    GENRES = sorted([genre for genre in os.listdir(GENRES_DIRPATH) if genre not in [".DS_Store"]])
-    print("GENRES:", GENRES)
+    ds = GenreDataset()
+    genres = ds.genres
+    print("GENRES:", genres)
 
-    results = []
-    for genre in GENRES:
+    records = []
+    for genre in genres:
         genre_dirpath = os.path.join(GENRES_DIRPATH, genre)
         #audio_filenames = sorted(os.listdir(genre_dirpath))
         audio_filenames = sorted([fname for fname in os.listdir(genre_dirpath) if fname.endswith(".wav")])
@@ -34,14 +34,8 @@ if __name__ == "__main__":
                     mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
                     mfcc = mfcc.T
 
-
-
-                    #features = ap.audio_features()
-                    # todo: collect the summary features
-
-
                     #print(audio_filename, track.shape, mfcc.shape)
-                    results.append({
+                    records.append({
                         "genre": genre,
                         "audio_filename": audio_filename,
                         "track_length": len(track),
@@ -50,10 +44,15 @@ if __name__ == "__main__":
                         "mfcc": mfcc
                     })
 
+
             except Exception as err:
                 print("... ERR:", audio_filename, err)
 
-    results_df = DataFrame(results)
+    #
+    # MFCC RESULTS
+    #
+
+    results_df = DataFrame(records)
     results_df.drop(columns=["mfcc"], inplace=True) # drop column with nested data
     print("TRACKS:", len(results_df))
     print(results_df.head())
@@ -75,9 +74,9 @@ if __name__ == "__main__":
     #results_df.to_csv(csv_filepath, index=False)
 
     json_filepath = os.path.join(FEATURES_DIR, f"mfcc_{N_MFCC}.json")
-    for row in results:
+    for row in results_df:
         row["mfcc"] = row["mfcc"].tolist() # numpy not serializable
         del row["track_length"]
         del row["mfcc_rows"]
         del row["mfcc_cols"]
-    download_json(results, json_filepath)
+    download_json(results_df, json_filepath)
