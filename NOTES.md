@@ -2,7 +2,32 @@
 # Notes
 
 
+
 ## GTZAN Dataset
+
+## Provided Features
+
+```
+
+chroma_stft_mean, chroma_stft_var
+rms_mean, rms_var
+spectral_centroid_mean, spectral_centroid_var
+spectral_bandwidth_mean, spectral_bandwidth_var
+rolloff_mean, rolloff_var
+zero_crossing_rate_mean, zero_crossing_rate_var
+harmony_mean, harmony_var
+perceptr_mean, perceptr_var
+tempo
+mfcc1_mean, mfcc1_var
+mfcc2_mean, mfcc2_var
+...
+mfcc20_mean, mfcc20_var
+```
+
+
+### Audio Processing
+
+#### Track Cutting
 
 Some of the files are not exactly 30 seconds long (1292 length), so we are trimming the longer ones and discarding the shorter ones. We could alternatively consider to decrease the track length to 28 or 29 seconds to capture all tracks.
 

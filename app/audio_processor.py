@@ -1,13 +1,12 @@
 
 import os
-import json
+#import json
 
 import numpy as np
 from pandas import DataFrame
 
 import librosa
-from librosa.feature import mfcc, chroma_stft, melspectrogram, spectral_contrast, tonnetz
-from librosa.effects import harmonic
+import librosa.feature as lf
 import soundfile as sf
 
 import warnings
@@ -61,7 +60,7 @@ class AudioProcessor:
             audio_data = self.audio
 
         #print(f"MFCC ({n_mfcc})...")
-        return mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
+        return lf.mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
 
     def mfcc_df(self, n_mfcc=N_MFCC, audio_data=None):
         the_mfcc = self.mfcc(n_mfcc, audio_data)
@@ -69,21 +68,73 @@ class AudioProcessor:
         mfcc_cols = [f"mfcc_{i}" for i in range(1, n_mfcc+1)]
         return DataFrame(the_mfcc.T, columns=mfcc_cols)
 
-    #def chroma_stft(self):
-    #    print("CHROMA STFT...")
-    #    return chroma_stft(y=audio_data, sr=self.sr)
+    def audio_features(self, n_mfcc=N_MFCC, n_chroma=1, audio_data=None):
+        audio_data = audio_data or self.audio
 
-    #def melspectrogram(self, audio_data=None):
-    #    print("MELSPECTROGRAM...")
-    #    return melspectrogram(y=audio_data, sr=self.sr)
+        features = {}
 
-    #def spectral_contrast(self, audio_data=None):
-    #    print("SPECTRAL CONTRAST...")
-    #    return spectral_contrast(y=audio_data, sr=self.sr)
+        #
+        # SINGLE COLUMN
+        #
 
-    #def tonnetz(self, audio_data=None):
-    #    print("TONNETZ...")
-    #    return tonnetz(y=harmonic(audio_data), sr=self.sr)
+        features["tempo"] = lf.tempo(y=audio_data, sr=self.sr)[0]
+
+        #
+        # MEAN AND VAR COLUMNS
+        # ... (the GTZAN dataset summarizes these with a single col for the mean and variance)
+        #
+
+        n_chroma=12
+        chroma_stft = lf.chroma_stft(y=audio_data, sr=self.sr, n_chroma=n_chroma) # there are n_chroma cols
+        features["chroma_stft_mean"] = chroma_stft.mean()
+        features["chroma_stft_var"] = chroma_stft.var()
+
+        rms = lf.rms(y=audio_data)
+        features["rms_mean"] = rms.mean()
+        features["rms_var"] = rms.var()
+
+        spectral_centroid = lf.spectral_centroid(y=audio_data, sr=self.sr)
+        features["spectral_centroid_mean"] = spectral_centroid.mean()
+        features["spectral_centroid_var"] = spectral_centroid.var()
+
+        spectral_bandwidth = lf.spectral_bandwidth(y=audio_data, sr=self.sr)
+        features["spectral_bandwidth_mean"] = spectral_bandwidth.mean()
+        features["spectral_bandwidth_var"] = spectral_bandwidth.var()
+
+        spectral_rolloff = lf.spectral_rolloff(y=audio_data, sr=self.sr)
+        features["spectral_rolloff_mean"] = spectral_rolloff.mean()
+        features["spectral_rolloff_var"] = spectral_rolloff.var()
+
+        zero_crossing = lf.zero_crossing_rate(y=audio_data)
+        features["zero_crossing_rate_mean"] = zero_crossing.mean()
+        features["zero_crossing_rate_var"] = zero_crossing.var()
+
+        # is this the harmony feature from GTZAN?
+        #harmony = librosa.effects.harmonic(audio_data, margin=3.0)
+        #features["harmony_mean"] = harmony.mean()
+        #features["harmony_var"] = harmony.var()
+
+        # not sure where the perceptr features are
+
+        # new feature not in GTZAN
+        tonnetz = lf.tonnetz(y=audio_data, sr=self.sr) # there are six cols
+        features["tonnetz_mean"] = tonnetz.mean()
+        features["tonnetz_var"] = tonnetz.var()
+
+        #
+        # MEAN AND VAR COLUMNS FOR EACH MFCC
+        #
+
+        mfcc = lf.mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
+        #mfcc_mean = np.mean(mfcc, axis=1)
+        #mfcc_var = np.var(mfcc, axis=1)
+        for i in range(0, n_mfcc):
+            features[f"mfcc_{i+1}_mean"] = mfcc[i].mean().tolist()
+            features[f"mfcc_{i+1}_var"] = mfcc[i].var().tolist()
+
+        #features = dict(zip(feature_names, feature_vals))
+        return features
+
 
     #
     # TRACK CUTTING
@@ -152,43 +203,54 @@ class AudioProcessor:
 
 
 
-
-
 if __name__ == "__main__":
 
+    pass
 
-    from app.gtzan_dataset import GTZAN_DIRPATH
-    from app.youtube_dataset import YoutubeDataset
+    #from conftest import TEST_AUDIO_FILEPATH
+#
+    #ap = AudioProcessor(TEST_AUDIO_FILEPATH)
+#
+    #ap.all_audio_features()
 
-    print("Let's grab an example audio file to process...")
-    dataset_name = input("Please choose a dataset ('gtzan', 'youtube'): ") or "gtzan"
-    print("DATASET:", dataset_name)
-    if dataset_name == "gtzan":
-        audio_filepath = os.path.join(GTZAN_DIRPATH, "genres_original", "pop", "pop.00000.wav")
-    elif dataset_name == "youtube":
-        ds = YoutubeDataset()
-        artist_name = input("Choose an artist name: ") or None
-        audio_filepath = ds.take_audio_filepath(artist_name)
 
-    ap = AudioProcessor(audio_filepath)
-    print("AUDIO:", ap.audio_filename)
 
-    TRACK_LENGTHS = [3, 10, 30]
-    NUMS_MFCC = [2, 3, 7, 13, 20]
 
-    for track_length in TRACK_LENGTHS:
-        print("------------------------")
-        print(f"TRACKS ({track_length} SECOND)...")
 
-        tracks = ap.tracks(track_length_seconds=track_length)
-        for i, track in enumerate(tracks):
-            track = np.array(track)
-            print("TRACK:", i, track.shape)
 
-            for n_mfcc in NUMS_MFCC:
-                mfcc_df = ap.mfcc_df(audio_data=track, n_mfcc=n_mfcc)
-                print("...", mfcc_df.shape)
-                #ap.save_track_mfcc(video_dirpath=video_dirpath, n_mfcc=n_mfcc)
+
+    #from app.gtzan_dataset import GTZAN_DIRPATH
+    #from app.youtube_dataset import YoutubeDataset
+    #
+    #print("Let's grab an example audio file to process...")
+    #dataset_name = input("Please choose a dataset ('gtzan', 'youtube'): ") or "gtzan"
+    #print("DATASET:", dataset_name)
+    #if dataset_name == "gtzan":
+    #    audio_filepath = os.path.join(GTZAN_DIRPATH, "genres_original", "pop", "pop.00000.wav")
+    #elif dataset_name == "youtube":
+    #    ds = YoutubeDataset()
+    #    artist_name = input("Choose an artist name: ") or None
+    #    audio_filepath = ds.take_audio_filepath(artist_name)
+    #
+    #ap = AudioProcessor(audio_filepath)
+    #print("AUDIO:", ap.audio_filename)
+    #
+    #TRACK_LENGTHS = [3, 10, 30]
+    #NUMS_MFCC = [2, 3, 7, 13, 20]
+    #
+    #for track_length in TRACK_LENGTHS:
+    #    print("------------------------")
+    #    print(f"TRACKS ({track_length} SECOND)...")
+    #
+    #    tracks = ap.tracks(track_length_seconds=track_length)
+    #    for i, track in enumerate(tracks):
+    #        track = np.array(track)
+    #        print("TRACK:", i, track.shape)
+    #
+    #        for n_mfcc in NUMS_MFCC:
+    #            mfcc_df = ap.mfcc_df(audio_data=track, n_mfcc=n_mfcc)
+    #            print("...", mfcc_df.shape)
+    #            #ap.save_track_mfcc(video_dirpath=video_dirpath, n_mfcc=n_mfcc)
 
 
 

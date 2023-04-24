@@ -34,3 +34,38 @@ def test_audio_processor(ap):
     expected_length = 3 * ap.sr
     assert expected_length == 66150
     assert np.array(tracks_3).shape == (10, expected_length) # ten shorter tracks
+
+
+
+def test_audio_features(ap):
+
+    features = ap.audio_features(n_mfcc=13)
+    assert isinstance(features, dict)
+    assert list(features.keys()) == [
+        'tempo',
+        'chroma_stft_mean', 'chroma_stft_var',
+        'rms_mean', 'rms_var',
+        'spectral_centroid_mean', 'spectral_centroid_var',
+        'spectral_bandwidth_mean', 'spectral_bandwidth_var',
+        'spectral_rolloff_mean', 'spectral_rolloff_var',
+        'zero_crossing_rate_mean', 'zero_crossing_rate_var',
+        'tonnetz_mean', 'tonnetz_var',
+        'mfcc_1_mean', 'mfcc_1_var',
+        'mfcc_2_mean', 'mfcc_2_var',
+        'mfcc_3_mean', 'mfcc_3_var',
+        'mfcc_4_mean', 'mfcc_4_var',
+        'mfcc_5_mean', 'mfcc_5_var',
+        'mfcc_6_mean', 'mfcc_6_var',
+        'mfcc_7_mean', 'mfcc_7_var',
+        'mfcc_8_mean', 'mfcc_8_var',
+        'mfcc_9_mean', 'mfcc_9_var',
+        'mfcc_10_mean', 'mfcc_10_var',
+        'mfcc_11_mean', 'mfcc_11_var',
+        'mfcc_12_mean', 'mfcc_12_var',
+        'mfcc_13_mean', 'mfcc_13_var'
+    ]
+    assert set([str(type(v)) for v in features.values()]) == {
+        "<class 'float'>",
+        "<class 'numpy.float64'>",
+        "<class 'numpy.float32'>"
+    } # todo: standardize dtypes

@@ -34,6 +34,12 @@ if __name__ == "__main__":
                     mfcc = ap.mfcc(n_mfcc=N_MFCC, audio_data=track)
                     mfcc = mfcc.T
 
+
+
+                    #features = ap.audio_features()
+                    # todo: collect the summary features
+
+
                     #print(audio_filename, track.shape, mfcc.shape)
                     results.append({
                         "genre": genre,
