@@ -1,12 +1,24 @@
 
 
 import os
+import json
 
 from app import DATA_DIRPATH
 
 
 YOUTUBE_DIRPATH = os.path.join(DATA_DIRPATH, "youtube")
 YOUTUBE_AUDIO_DIRPATH = os.path.join(YOUTUBE_DIRPATH, "audio")
+
+
+
+def load_mfcc_json(track_length, n_mfcc):
+    print("LOADING DATA...")
+    json_filepath = os.path.join(YOUTUBE_DIRPATH, f"features_{track_length}s", f"mfcc_{n_mfcc}.json")
+    print(os.path.abspath(json_filepath))
+    with open(json_filepath, "r") as json_file:
+        return json.load(json_file)
+
+
 
 
 class YoutubeDataset:

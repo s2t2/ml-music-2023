@@ -5,12 +5,7 @@ from pandas import DataFrame
 
 from app import download_json
 from app.gtzan_dataset import GTZAN_DIRPATH, GENRES_DIRPATH #, GenresDataset
-from app.audio_processor import AudioProcessor, TRACK_LENGTH
-
-
-
-N_MFCC = int(os.getenv("N_MFCC", default=20))
-
+from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC
 
 
 if __name__ == "__main__":

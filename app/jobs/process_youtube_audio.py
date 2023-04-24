@@ -5,10 +5,9 @@ from pandas import DataFrame
 
 from app import download_json
 from app.youtube_dataset import YoutubeDataset, YOUTUBE_DIRPATH #YOUTUBE_AUDIO_DIRPATH
-from app.audio_processor import AudioProcessor, TRACK_LENGTH
+from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC
 
 
-N_MFCC = int(os.getenv("N_MFCC", default=13))
 
 
 if __name__ == "__main__":

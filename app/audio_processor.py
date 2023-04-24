@@ -10,13 +10,13 @@ from librosa.feature import mfcc, chroma_stft, melspectrogram, spectral_contrast
 from librosa.effects import harmonic
 import soundfile as sf
 
-from app.youtube_dataset import YoutubeDataset
-
 import warnings
 warnings.filterwarnings("ignore")
 
 
 TRACK_LENGTH = int(os.getenv("TRACK_LENGTH", default=30)) # in seconds
+
+N_MFCC = int(os.getenv("N_MFCC", default=13))
 
 
 def split_into_batches(my_list, batch_size=10_000):
@@ -49,7 +49,7 @@ class AudioProcessor:
     # AUDIO FEATURES
     #
 
-    def mfcc(self, n_mfcc=12, audio_data=None):
+    def mfcc(self, n_mfcc=N_MFCC, audio_data=None):
         """Params :
 
             n_mfcc (int) : number of MFCCs
@@ -63,7 +63,7 @@ class AudioProcessor:
         #print(f"MFCC ({n_mfcc})...")
         return mfcc(y=audio_data, sr=self.sr, n_mfcc=n_mfcc)
 
-    def mfcc_df(self, n_mfcc=12, audio_data=None):
+    def mfcc_df(self, n_mfcc=N_MFCC, audio_data=None):
         the_mfcc = self.mfcc(n_mfcc, audio_data)
         #n_mfcc = the_mfcc.shape[0]
         mfcc_cols = [f"mfcc_{i}" for i in range(1, n_mfcc+1)]
@@ -158,6 +158,7 @@ if __name__ == "__main__":
 
 
     from app.gtzan_dataset import GTZAN_DIRPATH
+    from app.youtube_dataset import YoutubeDataset
 
     print("Let's grab an example audio file to process...")
     dataset_name = input("Please choose a dataset ('gtzan', 'youtube'): ") or "gtzan"

@@ -9,6 +9,7 @@ DATA_DIRPATH = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 
+
 def download_json(data, json_filepath):
     with open(json_filepath, "w") as json_file:
         json.dump(data, json_file)

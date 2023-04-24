@@ -22,11 +22,9 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 import plotly.express as px
 
-from app import GTZAN_DIRPATH
-from app.audio_processor import TRACK_LENGTH
+from app.gtzan_dataset import GTZAN_DIRPATH
+from app.audio_processor import TRACK_LENGTH, N_MFCC
 
-
-N_MFCC = int(os.getenv("N_MFCC", default=13))
 
 VAL_SIZE = float(os.getenv("VAL_SIZE", default=0.15))
 TEST_SIZE = float(os.getenv("TEST_SIZE", default=0.10))
