@@ -1,0 +1,78 @@
+import os
+from threading import current_thread #, BoundedSemaphore
+from concurrent.futures import ThreadPoolExecutor, as_completed # see: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
+
+import numpy as np
+from pandas import DataFrame
+
+from app.gtzan_dataset import GenreDataset, GTZAN_DIRPATH, GENRES_DIRPATH
+from app.audio_processor import AudioProcessor, TRACK_LENGTH, N_MFCC, split_into_batches
+
+
+MAX_THREADS = int(os.getenv("MAX_THREADS", default=5)) # the max number of threads to use, for concurrent processing
+
+
+def process_audio_async(audio_filepath):
+    genre = audio_filepath.split("/")[-2]
+    audio_filename = audio_filepath.split("/")[-1]
+    print(f"{current_thread().name} PROCESSING AUDIO -- {audio_filename}")
+
+    records = []
+    try:
+        ap = AudioProcessor(audio_filepath)
+        tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
+        for track in tracks:
+            track_info = {"genre": genre, "audio_filename": audio_filename, "track_length": len(track)}
+            #records.append(track_info)
+            track_features = ap.audio_features(n_mfcc=N_MFCC, audio_data=np.array(track))
+            records.append({**track_info, **track_features})
+
+    except Exception as err:
+        print("... ERR:", audio_filename, err)
+
+    return records
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+
+    ds = GenreDataset()
+    genres = ds.genres
+    print("GENRES:", genres)
+
+    records = []
+    with ThreadPoolExecutor(max_workers=MAX_THREADS, thread_name_prefix="THREAD") as executor:
+
+        futures = [executor.submit(process_audio_async, audio_filepath) for audio_filepath in ds.audio_filepaths]
+        print("AUDIO FILES TO BE PROCESSED:", len(futures))
+        for future in as_completed(futures):
+            result = future.result()
+            #print(result)
+            records += result
+
+    print("----------------")
+    print("ASYNC PERFORMANCE COMPLETE...")
+
+    #
+    # FEATURE RESULTS
+    #
+
+    results_df = DataFrame(records)
+    print("TRACKS:", len(results_df))
+    print(results_df.head())
+
+    print("TRACK LENGTHS:")
+    print(results_df["track_length"].value_counts())
+
+    # SAVE FEATURE RECORDS
+
+    FEATURES_DIR = os.path.join(GTZAN_DIRPATH, f"features_{TRACK_LENGTH}s")
+    os.makedirs(FEATURES_DIR, exist_ok=True)
+
+    csv_filepath = os.path.join(FEATURES_DIR, f"features_mfcc_{N_MFCC}.csv")
+    results_df.to_csv(csv_filepath, index=False)
