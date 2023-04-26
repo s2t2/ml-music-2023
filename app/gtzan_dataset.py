@@ -25,6 +25,10 @@ class AudioFile:
 
 class GenreDataset:
 
+    #def __init__(self, gtzan_dirpath=GTZAN_DIRPATH):
+    #    self.gtzan_dirpath = gtzan_dirpath
+    #    self.genres_dirpath = os.path.join(self.gtzan_dirpath, "genres_original")
+
     @cached_property
     def genres(self):
         return sorted([genre for genre in os.listdir(GENRES_DIRPATH) if genre not in [".DS_Store"]])
