@@ -8,6 +8,7 @@ requests
 Pillow
 matplotlib
 plotly
+kaleido # for exporting plotly images to png / html
 
 # processing / playing audio:
 #simpleaudio

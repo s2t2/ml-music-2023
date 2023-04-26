@@ -13,7 +13,7 @@ from pandas import DataFrame
 from sklearn.decomposition import PCA
 import plotly.express as px
 
-
+from app import RESULTS_DIRPATH
 from app.youtube_dataset import YoutubeDataset
 from app.audio_processor import TRACK_LENGTH, N_MFCC
 
@@ -87,21 +87,40 @@ class ReductionPipeline:
         if self.chart:
             self.plot_embeddings()
 
+    @property
+    def results_dirpath(self):
+        dirpath = os.path.join(RESULTS_DIRPATH, "youtube", f"length_{self.track_length}_mfcc_{self.n_mfcc}")
+        os.makedirs(dirpath, exist_ok=True)
+        return dirpath
+
+    @property
+    def embeddings_png_filepath(self):
+        return os.path.join(self.results_dirpath, f"pca_{self.n_components}.png")
+
+    @property
+    def embeddings_html_filepath(self):
+        return os.path.join(self.results_dirpath, f"pca_{self.n_components}.html")
+
     def plot_embeddings(self, height=500):
-        title = f"""GTZAN Genre Classifier - Dimensionality Reduction ({self.model_type} n_components={self.n_components})
-            <br><sup>Data: {self.track_length}s tracks, {self.n_mfcc} MFCCs</sup>
+        title = f"""Youtube Audio - Dimensionality Reduction ({self.model_type} n_components={self.n_components})
+            <br><sup>Data: {self.track_length} second tracks, {self.n_mfcc} MFCCs</sup>
         """
-        chart_params = dict(x="component_1", y="component_2", title=title, height=height,
-            color="artist_name", #, hover_data="audio_filename"
+        chart_params = dict(x="component_1", y="component_2",
+            title=title, height=height, color="artist_name", #, hover_data="audio_filename"
         )
 
         if self.n_components == 2:
             fig = px.scatter(self.embeddings_df, **chart_params)
             fig.show()
+            fig.write_image(self.embeddings_png_filepath)
+            fig.write_html(self.embeddings_html_filepath)
         elif self.n_components ==3:
             chart_params["z"] = "component_3"
             fig = px.scatter_3d(self.embeddings_df, **chart_params)
             fig.show()
+            fig.write_html(self.embeddings_html_filepath)
+
+
 
 
 
@@ -146,17 +165,68 @@ class ReductionPipeline:
 
 if __name__ == "__main__":
 
+    ds = YoutubeDataset()
+
+    component_nums = [2, 3
+    ]
+    #params_grid = [
+    #    # (track_length, n_mfcc)
+    #    (3, 8), (3,13), (3,20),
+    #    #(10, 8), (10,13), (10,20),
+    #    (15, 8), (15,13), (15,20),
+    #    #(20, 8), (20,13), (20,20),
+    #    (30, 8), (30,13), (30,20)
+    #]
+    params_grid = [
+        # (track_length, n_mfcc)
+        (3,13),
+        (30,13),
+    ]
+    for track_length, n_mfcc in params_grid:
+
+        try:
+            print("----------------------")
+            print("LENGTH:", track_length, "N_MFCC:", n_mfcc)
+
+            df = ds.read_features_csv(track_length=track_length, n_mfcc=n_mfcc)
+            print("TRACKS:", len(df))
+
+            print("ARTIST NAMES:")
+            print(sorted(df["artist_name"].unique()))
+
+            print("FEATURES:")
+            print(df.columns.tolist())
+
+            for n_components in component_nums:
+                pca_pipeline = ReductionPipeline(df,
+                    track_length=track_length,
+                    n_mfcc=n_mfcc,
+                    n_components=n_components
+                )
+                pca_pipeline.perform()
+        except Exception as err:
+            print("OOPS:", err)
+
+
+    exit()
+
+
+
+
     #
     # LOAD DATA
     #
 
     ds = YoutubeDataset()
-    print(ds.artist_names)
 
     df = ds.read_features_csv(track_length=TRACK_LENGTH, n_mfcc=N_MFCC)
-    #df.index = df["artist_name"] + "  " + df["audio_filename"] + "  " + df["track_number"].astype(str)
-    #df.index = df["audio_filename"] + "--" + df["track_number"].astype(str)
-    print(len(df))
+    print("TRACKS:", len(df))
+
+    print("ARTIST NAMES:")
+    print(sorted(df["artist_name"].unique()))
+
+    print("FEATURES:")
+    print(df.columns.tolist())
 
     #
     # REDUCE DATA
@@ -164,7 +234,3 @@ if __name__ == "__main__":
 
     pca_pipeline = ReductionPipeline(df)
     pca_pipeline.perform()
-
-    #print(embeddings_df.head())
-    #csv_filepath = os.path.join(DATA_DIRPATH, f"gtzan_songs_{TRACK_LENGTH}s_mfcc{N_MFCC}_pca_{n_components}.csv")
-    #embeddings_df.to_csv(csv_filepath)
