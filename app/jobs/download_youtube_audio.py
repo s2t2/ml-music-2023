@@ -48,7 +48,63 @@ VIDEO_URLS = {
         # TRAVELER
         "https://www.youtube.com/watch?v=l6_w3887Rwo", # Tennessee Whiskey
     ],
+    "tupac": [
+        "https://www.youtube.com/watch?v=xg3J5slvB-k", # changes
+        "https://www.youtube.com/watch?v=Mb1ZvUDvLDY", # dear mama
+        "https://www.youtube.com/watch?v=Do5MMmEygsY", # ghetto gospel
+        "https://www.youtube.com/watch?v=mwgZalAFNhM", # california love
+    ],
+    "jay_z": [
+        "https://www.youtube.com/watch?v=vk6014HuxcE", # empire state of mind w/ alicia keys
+        "https://www.youtube.com/watch?v=Cgoqrgc_0cM", # big pimpin
+        "https://www.youtube.com/watch?v=Oz_-VaTHpc8", # dirt off your shoulder
+        "https://www.youtube.com/watch?v=MaQZF0msXxE", # encore
+        "https://www.youtube.com/watch?v=GRKmpn3SBdw", # izzo
+        "https://www.youtube.com/watch?v=Kzq15y2J4UM", # young forever
+        "https://www.youtube.com/watch?v=MzTLMp-vh9s", # 99 problems (clean)
+    ],
+    "adele": [
+        "https://www.youtube.com/watch?v=rYEDA3JcQqw", # rolling in the deep
+        "https://www.youtube.com/watch?v=uJdu4Lfy8aI", # set fire to the rain
+        "https://www.youtube.com/watch?v=hLQl3WQQoQ0", # someone like you
+        "https://www.youtube.com/watch?v=U3ASj1L6_sY", # easy on me
+        "https://www.youtube.com/watch?v=oytOOA9sOiE", # love in the dark
+        "https://www.youtube.com/watch?v=YQHsXMglC9A", # hello
+    ],
+    "taylor_swift": [
+        "https://www.youtube.com/watch?v=e-ORhEE9VVg", # blank space
+        "https://www.youtube.com/watch?v=b1kbLwvqugk", # anti hero
+        "https://www.youtube.com/watch?v=nfWlot6h_JM", # shake it off
+        "https://www.youtube.com/watch?v=-CmadmM5cOk", # style
+        "https://www.youtube.com/watch?v=K-a8s8OLBSE", # cardigan
+        "https://www.youtube.com/watch?v=-BjZmE2gtdo", # lover
+        "https://www.youtube.com/watch?v=QcIy9NiNbmo", # bad blood
+    ],
+    "phantogram": [
+        "https://www.youtube.com/watch?v=a0ul-BghOAs", # black out days
+        "https://www.youtube.com/watch?v=pmb1dDB2tak", # cruel world
+        "https://www.youtube.com/watch?v=ZvSgLHWR16o", # mouth full of diamonds
+        "https://www.youtube.com/watch?v=Ur17pfjIRVo", # don't move
+    ],
+    "ariana_grande": [
+        "https://www.youtube.com/watch?v=SXiSVQZLje8", # side to side
+        "https://www.youtube.com/watch?v=gl1aHhXnN1k", # thank u next
+        "https://www.youtube.com/watch?v=pE49WK-oNjU", # stuck with you
+        "https://www.youtube.com/watch?v=g5qU7p7yOY8", # love me harder
+        "https://www.youtube.com/watch?v=BPgEgaPk62M", # one last time
+        "https://www.youtube.com/watch?v=B6_iQvaIjXw", # 34+35
+        "https://www.youtube.com/watch?v=tcYodQoapMg", # positions
+        "https://www.youtube.com/watch?v=kHLHSlExFis", # god is a woman
+        "https://www.youtube.com/watch?v=uKqRAC-JNOM", # bloodline
+        "https://www.youtube.com/watch?v=m7XHduHsBvk", # bad idea
+        "https://www.youtube.com/watch?v=Z1pmpDRrQhU", # ghostin
+        "https://www.youtube.com/watch?v=LH4Y1ZUUx2g", # break up w your gf
+    ]
 
+    # "_______", #
+    # "_______", #
+    # "_______", #
+    # "_______", #
 
 }
 
