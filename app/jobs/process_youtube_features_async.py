@@ -13,6 +13,7 @@ MAX_THREADS = int(os.getenv("MAX_THREADS", default=5)) # the max number of threa
 
 
 # todo: consider refactoring into the FeatureMakerAsync class, or assigning to a class method
+# todo: Idempotence: store the features for each song in the video dir, and only process new audio features if A) there isn't a currently existing file in that dir, and B) we are not in force mode
 def process_youtube_audio_async(audio_file:YoutubeAudioFile, track_length=TRACK_LENGTH, n_mfcc=N_MFCC):
     audio_filename = audio_file.audio_filename #audio_filepath.split("/")[-1]
     print(f"{current_thread().name} PROCESSING AUDIO -- {audio_filename}")
