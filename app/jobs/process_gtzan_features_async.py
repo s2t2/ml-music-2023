@@ -20,8 +20,13 @@ def process_audio_async(audio_file:AudioFile):
     try:
         ap = AudioProcessor(audio_file.audio_filepath)
         tracks = ap.tracks(track_length_seconds=TRACK_LENGTH)
-        for track in tracks:
-            track_info = {"genre": audio_file.genre, "audio_filename": audio_filename, "track_length": len(track)}
+        for i, track in enumerate(tracks):
+            track_info = {
+                "genre": audio_file.genre,
+                "audio_filename": audio_filename,
+                "track_number": i+1,
+                "track_length": len(track)
+            }
             #records.append(track_info)
             track_features = ap.audio_features(n_mfcc=N_MFCC, audio_data=np.array(track))
             records.append({**track_info, **track_features})

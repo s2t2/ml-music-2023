@@ -27,13 +27,13 @@ Download the ["gtzan-dataset-music-genre-classification" dataset](https://www.ka
 There is a CSV file of provided audio features. This data can be used for normal machine learning models. We can optionally recreate our own (mostly similar) versions of the provided data, specifying different track lengths and number of MFCCs:
 
 ```sh
-TRACK_LENGTH=3 N_MFCC=8   python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=3 N_MFCC=13  python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=3 N_MFCC=20  python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=3 N_MFCC=8   MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=3 N_MFCC=13  MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=3 N_MFCC=20  MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
 
-TRACK_LENGTH=30 N_MFCC=8  python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.process_gtzan_features_async
-TRACK_LENGTH=30 N_MFCC=20 python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=30 N_MFCC=8  MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=30 N_MFCC=13 MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
+TRACK_LENGTH=30 N_MFCC=20 MAX_THREADS=10 python -m app.jobs.process_gtzan_features_async
 ```
 
 

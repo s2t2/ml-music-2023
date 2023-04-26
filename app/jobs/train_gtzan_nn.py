@@ -37,7 +37,6 @@ LEARNING_RATE = float(os.getenv("LEARNING_RATE", default=0.0001))
 PATIENCE = int(os.getenv("PATIENCE", default=10))
 
 
-
 def load_gtzan_mfcc(track_length=TRACK_LENGTH, n_mfcc=N_MFCC, encode_labels=True):
 
     print("LOADING DATA...")

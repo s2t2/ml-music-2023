@@ -56,7 +56,6 @@ class GenreDataset:
         return files
 
 
-    @property
     def features_csv_filepath(self, track_length, n_mfcc):
         features_dirpath = os.path.join(GTZAN_DIRPATH, f"features_{track_length}s")
         os.makedirs(features_dirpath, exist_ok=True)
