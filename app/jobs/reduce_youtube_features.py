@@ -26,8 +26,8 @@ LABEL_COLS = ["artist_name", "video_id", "audio_filename", "track_number", "trac
 
 class ReductionPipeline:
     def __init__(self, df, label_cols=LABEL_COLS, y_col="artist_name", x_scale=X_SCALE,
-                        n_components=N_COMPONENTS, track_length=TRACK_LENGTH, n_mfcc=N_MFCC,
-                        chart=True):
+                        reducer_type="PCA", n_components=N_COMPONENTS,
+                        track_length=TRACK_LENGTH, n_mfcc=N_MFCC, chart=True):
 
         self.df = df
         self.labels_df = self.df[label_cols]
@@ -38,7 +38,7 @@ class ReductionPipeline:
 
         self.x_scale = x_scale
 
-        self.model_type = "PCA"
+        self.reducer_type = reducer_type
         self.n_components = n_components
 
         self.chart = chart
@@ -86,6 +86,7 @@ class ReductionPipeline:
 
         if self.chart:
             self.plot_embeddings()
+            self.plot_embedding_centroids()
 
     @property
     def results_dirpath(self):
@@ -101,18 +102,28 @@ class ReductionPipeline:
     def embeddings_html_filepath(self):
         return os.path.join(self.results_dirpath, f"pca_{self.n_components}.html")
 
+    @property
+    def centroids_png_filepath(self):
+        return os.path.join(self.results_dirpath, f"pca_{self.n_components}_centroids.png")
+
+    @property
+    def centroids_html_filepath(self):
+        return os.path.join(self.results_dirpath, f"pca_{self.n_components}_centroids.html")
+
+
     def plot_embeddings(self, height=500):
-        title = f"""Youtube Audio - Dimensionality Reduction ({self.model_type} n_components={self.n_components})
+        title = f"""Youtube Audio - Dimensionality Reduction ({self.reducer_type} n_components={self.n_components})
             <br><sup>Data: {self.track_length} second tracks, {self.n_mfcc} MFCCs</sup>
         """
         chart_params = dict(x="component_1", y="component_2",
-            title=title, height=height, color="artist_name", #, hover_data="audio_filename"
+            title=title, height=height,
+            color="artist_name", hover_data=["audio_filename", "track_number"]
         )
 
         if self.n_components == 2:
             fig = px.scatter(self.embeddings_df, **chart_params)
             fig.show()
-            fig.write_image(self.embeddings_png_filepath)
+            #fig.write_image(self.embeddings_png_filepath)
             fig.write_html(self.embeddings_html_filepath)
         elif self.n_components ==3:
             chart_params["z"] = "component_3"
@@ -121,7 +132,34 @@ class ReductionPipeline:
             fig.write_html(self.embeddings_html_filepath)
 
 
+    def plot_embedding_centroids(self, height=500):
+        title = f"""Youtube Audio - Dimensionality Reduction ({self.reducer_type} n_components={self.n_components}) Artist Centroids
+            <br><sup>Data: {self.track_length} second tracks, {self.n_mfcc} MFCCs</sup>
+        """
+        chart_params = dict(x="component_1", y="component_2",
+            title=title, height=height,
+            color="artist_name", # hover_data=["audio_filename", "track_number"]
+            text="artist_name"
 
+        )
+        agg_params = {"component_1": "mean", "component_2": "mean"}
+
+        fig = None
+        if self.n_components == 2:
+            artist_centroids = self.embeddings_df.groupby("artist_name").agg(agg_params)
+            artist_centroids["artist_name"] = artist_centroids.index
+            fig = px.scatter(artist_centroids, **chart_params)
+        elif self.n_components ==3:
+            chart_params["z"] = "component_3"
+            agg_params["component_3"] = "mean"
+            artist_centroids = self.embeddings_df.groupby("artist_name").agg(agg_params)
+            artist_centroids["artist_name"] = artist_centroids.index
+            fig = px.scatter_3d(artist_centroids, **chart_params)
+
+        if fig:
+            fig.update_traces(textposition='top center')
+            fig.show()
+            fig.write_image(self.centroids_png_filepath)
 
 
 
@@ -167,21 +205,21 @@ if __name__ == "__main__":
 
     ds = YoutubeDataset()
 
-    component_nums = [2, 3
+    component_nums = [2 , 3
+    ]
+    params_grid = [
+        # (track_length, n_mfcc)
+        (3, 8), (3,13), (3,20),
+        #(10, 8), (10,13), (10,20),
+        (15, 8), (15,13), (15,20),
+        #(20, 8), (20,13), (20,20),
+        (30, 8), (30,13), (30,20)
     ]
     #params_grid = [
     #    # (track_length, n_mfcc)
-    #    (3, 8), (3,13), (3,20),
-    #    #(10, 8), (10,13), (10,20),
-    #    (15, 8), (15,13), (15,20),
-    #    #(20, 8), (20,13), (20,20),
-    #    (30, 8), (30,13), (30,20)
+    #    (3,13), (3,20),
+    #    (30,13), (30,20)
     #]
-    params_grid = [
-        # (track_length, n_mfcc)
-        (3,13),
-        (30,13),
-    ]
     for track_length, n_mfcc in params_grid:
 
         try:

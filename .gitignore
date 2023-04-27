@@ -14,6 +14,17 @@ data/youtube/*/*.json
 
 data/gtzan/
 
+
+
+results/youtube/*/*
+
+
+
+
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
