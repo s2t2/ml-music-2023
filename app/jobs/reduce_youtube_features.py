@@ -216,8 +216,7 @@ if __name__ == "__main__":
 
     ds = YoutubeDataset()
 
-    component_nums = [2 , 3
-    ]
+    component_nums = [2 , 3]
     params_grid = [
         # (track_length, n_mfcc)
         (3, 8), (3,13), (3,20),
@@ -226,11 +225,6 @@ if __name__ == "__main__":
         #(20, 8), (20,13), (20,20),
         (30, 8), (30,13), (30,20)
     ]
-    #params_grid = [
-    #    # (track_length, n_mfcc)
-    #    (3,13), (3,20),
-    #    (30,13), (30,20)
-    #]
     for track_length, n_mfcc in params_grid:
 
         try:

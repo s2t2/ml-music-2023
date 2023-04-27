@@ -19,7 +19,7 @@ from app.image_service import ImageService
 
 
 VIDEO_URL = os.getenv("VIDEO_URL", default="https://www.youtube.com/watch?v=q6HiZIQoLSU")
-MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", default=10))
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", default=15))
 VERBOSE = bool(os.getenv("VERBOSE", default="false") == "true")
 
 class YoutubeVideoService():

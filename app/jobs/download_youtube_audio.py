@@ -64,55 +64,63 @@ VIDEO_URLS = {
     ],
     "tupac": [
         "https://www.youtube.com/watch?v=sf9MDMYca0w", # all eyes on me
-        "https://www.youtube.com/watch?v=41qC3w3UUkU", # hit em up
-        "https://www.youtube.com/watch?v=xg3J5slvB-k", # changes
-        "https://www.youtube.com/watch?v=Mb1ZvUDvLDY", # dear mama
-        "https://www.youtube.com/watch?v=Do5MMmEygsY", # ghetto gospel
-        "https://www.youtube.com/watch?v=mwgZalAFNhM", # california love remix
-        "https://www.youtube.com/watch?v=Y2cWHiKaFjc",
-        "https://www.youtube.com/watch?v=77nB_9uIcN4"
+        #"https://www.youtube.com/watch?v=41qC3w3UUkU", # hit em up
+        #"https://www.youtube.com/watch?v=xg3J5slvB-k", # changes
+        #"https://www.youtube.com/watch?v=Mb1ZvUDvLDY", # dear mama
+        #"https://www.youtube.com/watch?v=Do5MMmEygsY", # ghetto gospel
+        #"https://www.youtube.com/watch?v=mwgZalAFNhM", # california love remix
+        "https://www.youtube.com/watch?v=Y2cWHiKaFjc", # do for love
+        #"https://www.youtube.com/watch?v=77nB_9uIcN4", # ambitions as a ridah
+        #"https://www.youtube.com/watch?v=rrLgvHG_GYc", # hail mary
+        #"https://www.youtube.com/watch?v=9wVtWAwTMPU",
     ],
     "jay_z": [
-        "https://www.youtube.com/watch?v=vk6014HuxcE", # empire state of mind w/ alicia keys
-        "https://www.youtube.com/watch?v=Cgoqrgc_0cM", # big pimpin
-        "https://www.youtube.com/watch?v=Oz_-VaTHpc8", # dirt off your shoulder
-        "https://www.youtube.com/watch?v=MaQZF0msXxE", # encore
-        "https://www.youtube.com/watch?v=GRKmpn3SBdw", # izzo
-        "https://www.youtube.com/watch?v=Kzq15y2J4UM", # young forever
-        "https://www.youtube.com/watch?v=MzTLMp-vh9s", # 99 problems (clean)
+        #"https://www.youtube.com/watch?v=vk6014HuxcE", # empire state of mind w/ alicia keys
+        #"https://www.youtube.com/watch?v=dyUqaHAHH2c", # jigga what
+        #"https://www.youtube.com/watch?v=Cgoqrgc_0cM", # big pimpin
+        #"https://www.youtube.com/watch?v=Oz_-VaTHpc8", # dirt off your shoulder
+        #"https://www.youtube.com/watch?v=MaQZF0msXxE", # encore
+        #"https://www.youtube.com/watch?v=GRKmpn3SBdw", # izzo
+        #"https://www.youtube.com/watch?v=Kzq15y2J4UM", # young forever
+        #"https://www.youtube.com/watch?v=MzTLMp-vh9s", # 99 problems (clean)
+        "https://www.youtube.com/watch?v=EeE7CfNs7Js", # run this town
+        "https://www.youtube.com/watch?v=w5srnNrICJo", # song cry
+        #"https://www.youtube.com/watch?v=wuhhSAa-yrs", # what more can i say
+        #"https://www.youtube.com/watch?v=XzBB2VPQ5Os", # moment of clarity
+        "https://www.youtube.com/watch?v=n2kigJH0uU0" # allure
     ],
     "adele": [
-        "https://www.youtube.com/watch?v=rYEDA3JcQqw", # rolling in the deep
-        "https://www.youtube.com/watch?v=uJdu4Lfy8aI", # set fire to the rain
-        "https://www.youtube.com/watch?v=hLQl3WQQoQ0", # someone like you
-        "https://www.youtube.com/watch?v=U3ASj1L6_sY", # easy on me
-        "https://www.youtube.com/watch?v=oytOOA9sOiE", # love in the dark
-        "https://www.youtube.com/watch?v=YQHsXMglC9A", # hello
+        #"https://www.youtube.com/watch?v=rYEDA3JcQqw", # rolling in the deep
+        #"https://www.youtube.com/watch?v=uJdu4Lfy8aI", # set fire to the rain
+        #"https://www.youtube.com/watch?v=hLQl3WQQoQ0", # someone like you
+        #"https://www.youtube.com/watch?v=U3ASj1L6_sY", # easy on me
+        #"https://www.youtube.com/watch?v=oytOOA9sOiE", # love in the dark
+        #"https://www.youtube.com/watch?v=YQHsXMglC9A", # hello
         "https://www.youtube.com/watch?v=fk4BbF7B29w", # send my love
         "https://www.youtube.com/watch?v=jDvYDzFOK9A", # i drink wine
-        "https://www.youtube.com/watch?v=sonzlE32YVg", # all i ask
-        "https://www.youtube.com/watch?v=Xpc8mAJ_2nM", # when we were young
+        #"https://www.youtube.com/watch?v=sonzlE32YVg", # all i ask
+        #"https://www.youtube.com/watch?v=Xpc8mAJ_2nM", # when we were young
     ],
     "taylor_swift": [
-        "https://www.youtube.com/watch?v=e-ORhEE9VVg", # blank space
-        "https://www.youtube.com/watch?v=b1kbLwvqugk", # anti hero
-        "https://www.youtube.com/watch?v=nfWlot6h_JM", # shake it off
-        "https://www.youtube.com/watch?v=-CmadmM5cOk", # style
-        "https://www.youtube.com/watch?v=K-a8s8OLBSE", # cardigan
-        "https://www.youtube.com/watch?v=-BjZmE2gtdo", # lover
-        "https://www.youtube.com/watch?v=QcIy9NiNbmo", # bad blood
+        #"https://www.youtube.com/watch?v=e-ORhEE9VVg", # blank space
+        #"https://www.youtube.com/watch?v=b1kbLwvqugk", # anti hero
+        #"https://www.youtube.com/watch?v=nfWlot6h_JM", # shake it off
+        #"https://www.youtube.com/watch?v=-CmadmM5cOk", # style
+        #"https://www.youtube.com/watch?v=K-a8s8OLBSE", # cardigan
+        #"https://www.youtube.com/watch?v=-BjZmE2gtdo", # lover
+        #"https://www.youtube.com/watch?v=QcIy9NiNbmo", # bad blood
 
         # crowd sourced additions, maybe overlaps:
-        "https://youtu.be/FNEoPctNIUE",
-        "https://youtu.be/OWbDJFtHl3w",
-        "https://youtu.be/kRJKB291Z1g",
-        "https://youtu.be/XzKSPRqFg9E",
-        "https://youtu.be/KsZ6tROaVOQ",
-        "https://youtu.be/KaM1bCuG4xo",
-        "https://youtu.be/GTEFSuFfgnU",
-        "https://youtu.be/u9raS7-NisU",
+        "https://youtu.be/FNEoPctNIUE", # FNEoPctNIUE
+        #"https://youtu.be/OWbDJFtHl3w", # OWbDJFtHl3w
+        "https://youtu.be/kRJKB291Z1g", # kRJKB291Z1g
+        #"https://youtu.be/XzKSPRqFg9E", # XzKSPRqFg9E
+        #"https://youtu.be/KsZ6tROaVOQ", # KsZ6tROaVOQ
+        "https://youtu.be/KaM1bCuG4xo", # KaM1bCuG4xo
+        "https://youtu.be/GTEFSuFfgnU", # GTEFSuFfgnU
+        #"https://youtu.be/u9raS7-NisU",
         "https://youtu.be/u1D1AgDfreg",
-        "https://youtu.be/9OQBDdNHmXo",
+        #"https://youtu.be/9OQBDdNHmXo",
 
     ],
     #"phantogram": [
@@ -122,18 +130,18 @@ VIDEO_URLS = {
     #    "https://www.youtube.com/watch?v=Ur17pfjIRVo", # don't move
     #],
     "ariana_grande": [
-        "https://www.youtube.com/watch?v=SXiSVQZLje8", # side to side
-        "https://www.youtube.com/watch?v=gl1aHhXnN1k", # thank u next
-        "https://www.youtube.com/watch?v=pE49WK-oNjU", # stuck with you
-        "https://www.youtube.com/watch?v=g5qU7p7yOY8", # love me harder
-        "https://www.youtube.com/watch?v=BPgEgaPk62M", # one last time
-        "https://www.youtube.com/watch?v=B6_iQvaIjXw", # 34+35
-        "https://www.youtube.com/watch?v=tcYodQoapMg", # positions
-        "https://www.youtube.com/watch?v=kHLHSlExFis", # god is a woman
-        "https://www.youtube.com/watch?v=uKqRAC-JNOM", # bloodline
-        "https://www.youtube.com/watch?v=m7XHduHsBvk", # bad idea
-        "https://www.youtube.com/watch?v=Z1pmpDRrQhU", # ghostin
-        "https://www.youtube.com/watch?v=LH4Y1ZUUx2g", # break up w your gf
+        #"https://www.youtube.com/watch?v=SXiSVQZLje8", # side to side
+        #"https://www.youtube.com/watch?v=gl1aHhXnN1k", # thank u next
+        #"https://www.youtube.com/watch?v=pE49WK-oNjU", # stuck with you
+        #"https://www.youtube.com/watch?v=g5qU7p7yOY8", # love me harder
+        #"https://www.youtube.com/watch?v=BPgEgaPk62M", # one last time
+        #"https://www.youtube.com/watch?v=B6_iQvaIjXw", # 34+35
+        #"https://www.youtube.com/watch?v=tcYodQoapMg", # positions
+        #"https://www.youtube.com/watch?v=kHLHSlExFis", # god is a woman
+        #"https://www.youtube.com/watch?v=uKqRAC-JNOM", # bloodline
+        #"https://www.youtube.com/watch?v=m7XHduHsBvk", # bad idea
+        #"https://www.youtube.com/watch?v=Z1pmpDRrQhU", # ghostin
+        #"https://www.youtube.com/watch?v=LH4Y1ZUUx2g", # break up w your gf
     ],
     "miranda_lambert": [
         "https://www.youtube.com/watch?v=aWQdEDtveB0", # gunpowder and lead
@@ -146,14 +154,14 @@ VIDEO_URLS = {
     ],
     "frank_sinatra": [
         "https://www.youtube.com/watch?v=qQzdAsjWGPg", # my way
-        "https://www.youtube.com/watch?v=rSrc7aulay8", # fly me to the moon
+        #"https://www.youtube.com/watch?v=rSrc7aulay8", # fly me to the moon
         "https://www.youtube.com/watch?v=XvfImv9NseY", # that's life
-        "https://www.youtube.com/watch?v=dthgRdTf0Ds", #
-        "https://www.youtube.com/watch?v=gFwuHsra6Oc", #
-        "https://www.youtube.com/watch?v=82_JCboW69U", #
-        "https://www.youtube.com/watch?v=LWXUdqvVO8Y", #
-        "https://www.youtube.com/watch?v=BTOeRwIUnG0", #
-        "https://www.youtube.com/watch?v=Qp6D71kQRhA", #
+        #"https://www.youtube.com/watch?v=dthgRdTf0Ds", #
+        #"https://www.youtube.com/watch?v=gFwuHsra6Oc", #
+        #"https://www.youtube.com/watch?v=82_JCboW69U", #
+        #"https://www.youtube.com/watch?v=LWXUdqvVO8Y", #
+        #"https://www.youtube.com/watch?v=BTOeRwIUnG0", #
+        #"https://www.youtube.com/watch?v=Qp6D71kQRhA", #
         "https://www.youtube.com/watch?v=TK0Vdb1RUCk", #
     ],
     "michael_buble": [
@@ -181,37 +189,37 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=m5UcZ9thgPI", #
         "https://www.youtube.com/watch?v=4L_yCwFD6Jo", #
         "https://www.youtube.com/watch?v=CNHL66K8S2I", #
-        "https://www.youtube.com/watch?v=ChcR2gKt5WM", #
-        "https://www.youtube.com/watch?v=xYz5CiEy5bY", #
-        "https://www.youtube.com/watch?v=nVUHHW1tJYA", #
-        "https://www.youtube.com/watch?v=NfU99xfo8MY", #
-        "https://www.youtube.com/watch?v=srti9S6wQpY", #
-        "https://www.youtube.com/watch?v=nexnnrYyTmc", #
-        "https://www.youtube.com/watch?v=4REbp0s_G9w", #
+        #"https://www.youtube.com/watch?v=ChcR2gKt5WM", #
+        #"https://www.youtube.com/watch?v=xYz5CiEy5bY", #
+        #"https://www.youtube.com/watch?v=nVUHHW1tJYA", #
+        #"https://www.youtube.com/watch?v=NfU99xfo8MY", #
+        #"https://www.youtube.com/watch?v=srti9S6wQpY", #
+        #"https://www.youtube.com/watch?v=nexnnrYyTmc", #
+        #"https://www.youtube.com/watch?v=4REbp0s_G9w", #
     ],
     "jason_aldean": [
-        "https://www.youtube.com/watch?v=7i1ImAbmcjM", #
-        "https://www.youtube.com/watch?v=jLCHpZ6B1gU", #
-        "https://www.youtube.com/watch?v=Zc3cxj5pDIs", #
-        "https://www.youtube.com/watch?v=Lb9q1ScC4cg", #
+        #"https://www.youtube.com/watch?v=7i1ImAbmcjM", #
+        #"https://www.youtube.com/watch?v=jLCHpZ6B1gU", #
+        #"https://www.youtube.com/watch?v=Zc3cxj5pDIs", #
+        #"https://www.youtube.com/watch?v=Lb9q1ScC4cg", #
         "https://www.youtube.com/watch?v=xdImDqbgc2g", #
-        "https://www.youtube.com/watch?v=ZsvR6XAl1os", #
-        "https://www.youtube.com/watch?v=b3HW2BYxz5Q", #
-        "https://www.youtube.com/watch?v=zsM8GD2Q4nU", #
-        "https://www.youtube.com/watch?v=TAtWP5Mct5I", #
+        #"https://www.youtube.com/watch?v=ZsvR6XAl1os", #
+        #"https://www.youtube.com/watch?v=b3HW2BYxz5Q", #
+        #"https://www.youtube.com/watch?v=zsM8GD2Q4nU", #
+        #"https://www.youtube.com/watch?v=TAtWP5Mct5I", #
         "https://www.youtube.com/watch?v=OeFYetKv_XE", #
     ],
     "john_legend": [
-        "https://www.youtube.com/watch?v=450p7goxZqg", #
+        #"https://www.youtube.com/watch?v=450p7goxZqg", #
         "https://www.youtube.com/watch?v=jKIEUdAMtrQ", #
-        "https://www.youtube.com/watch?v=axySrE0Kg6k", #
-        "https://www.youtube.com/watch?v=iXvy8ZeCs5M", #
-        "https://www.youtube.com/watch?v=ZKr4ys2avI0", #
+        #"https://www.youtube.com/watch?v=axySrE0Kg6k", #
+        #"https://www.youtube.com/watch?v=iXvy8ZeCs5M", #
+        #"https://www.youtube.com/watch?v=ZKr4ys2avI0", #
         "https://www.youtube.com/watch?v=qUD2GxTeVcI", #
         "https://www.youtube.com/watch?v=NmCFY1oYDeM", #
-        "https://www.youtube.com/watch?v=PIh07c_P4hc", #
-        "https://www.youtube.com/watch?v=SsjVHBvh1HQ", #
-        "https://www.youtube.com/watch?v=ZwbNesQeods", #
+        #"https://www.youtube.com/watch?v=PIh07c_P4hc", #
+        #"https://www.youtube.com/watch?v=SsjVHBvh1HQ", #
+        #"https://www.youtube.com/watch?v=ZwbNesQeods", #
     ],
     "bts": [
         "https://www.youtube.com/watch?v=gdZLi9oWNZg", #
@@ -226,15 +234,15 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=pBuZEGYXA6E",
     ],
     "alicia_keys": [
-        "https://www.youtube.com/watch?v=QtE3O3z1wcs", #
-        "https://www.youtube.com/watch?v=rywUS-ohqeE", #
-        "https://www.youtube.com/watch?v=J91ti_MpdHA", #
-        "https://www.youtube.com/watch?v=Ju8Hr50Ckwk", #
-        "https://www.youtube.com/watch?v=Urdlvw0SSEc", #
-        "https://www.youtube.com/watch?v=fPgf2meEX1w", #
+        #"https://www.youtube.com/watch?v=QtE3O3z1wcs", #
+        #"https://www.youtube.com/watch?v=rywUS-ohqeE", #
+        #"https://www.youtube.com/watch?v=J91ti_MpdHA", #
+        #"https://www.youtube.com/watch?v=Ju8Hr50Ckwk", #
+        #"https://www.youtube.com/watch?v=Urdlvw0SSEc", #
+        #"https://www.youtube.com/watch?v=fPgf2meEX1w", #
         "https://www.youtube.com/watch?v=HhuGQUZJot8", #
-        "https://www.youtube.com/watch?v=_ST6ZRbhGiA", #
-        "https://www.youtube.com/watch?v=srMBZiqNMaM", #
+        #"https://www.youtube.com/watch?v=_ST6ZRbhGiA", #
+        #"https://www.youtube.com/watch?v=srMBZiqNMaM", #
         "https://www.youtube.com/watch?v=0yVdBlGSgRw", #
     ],
     "bon_iver": [
@@ -298,40 +306,46 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=SYCxdWaN6iU", #
     ],
     "bruce_springsteen": [
-        "https://www.youtube.com/watch?v=129kuDCQtHs", #
-        "https://www.youtube.com/watch?v=_91hNV6vuBY", #
-        "https://www.youtube.com/watch?v=EPhWR4d3FJQ", #
-        "https://www.youtube.com/watch?v=B9VTZ1gB2aA", #
-        "https://www.youtube.com/watch?v=lrpXArn3hII", #
-        "https://www.youtube.com/watch?v=tKdk97y2Wjg", #
-        "https://www.youtube.com/watch?v=9XQX-zRVK-w", #
-        "https://www.youtube.com/watch?v=6vQpW9XRiyM", #
-        "https://www.youtube.com/watch?v=GsTKEQzLkmw", #
-        "https://www.youtube.com/watch?v=WY1spB1J0vw", #
+        #"https://www.youtube.com/watch?v=129kuDCQtHs", #
+        #"https://www.youtube.com/watch?v=_91hNV6vuBY", #
+        #"https://www.youtube.com/watch?v=EPhWR4d3FJQ", #
+        #"https://www.youtube.com/watch?v=B9VTZ1gB2aA", #
+        #"https://www.youtube.com/watch?v=lrpXArn3hII", #
+        #"https://www.youtube.com/watch?v=tKdk97y2Wjg", #
+        #"https://www.youtube.com/watch?v=9XQX-zRVK-w", #
+        #"https://www.youtube.com/watch?v=6vQpW9XRiyM", #
+        #"https://www.youtube.com/watch?v=GsTKEQzLkmw", #
+        #"https://www.youtube.com/watch?v=WY1spB1J0vw", #
     ],
     "rihanna": [
-        "https://www.youtube.com/watch?v=lWA2pjMjpBs", #
-        "https://www.youtube.com/watch?v=CvBfHwUxHIk", #
-        "https://www.youtube.com/watch?v=QMP-o8WXSPM", #
-        "https://www.youtube.com/watch?v=Mx_OexsUI2M", #
+        #"https://www.youtube.com/watch?v=lWA2pjMjpBs", #
+        #"https://www.youtube.com/watch?v=CvBfHwUxHIk", #
+        #"https://www.youtube.com/watch?v=QMP-o8WXSPM", #
+        #"https://www.youtube.com/watch?v=Mx_OexsUI2M", #
         "https://www.youtube.com/watch?v=YbHe2gFnhq8", #
-        "https://www.youtube.com/watch?v=tg00YEETFzg", #
+        #"https://www.youtube.com/watch?v=tg00YEETFzg", #
         "https://www.youtube.com/watch?v=JF8BRvqGCNs", #
-        "https://www.youtube.com/watch?v=HBxt_v0WF6Y", #
-        "https://www.youtube.com/watch?v=HL1UzIK-flA", #
+        #"https://www.youtube.com/watch?v=HBxt_v0WF6Y", #
+        #"https://www.youtube.com/watch?v=HL1UzIK-flA", #
         "https://www.youtube.com/watch?v=J3UjJ4wKLkg", #
     ],
     "coldplay": [
-        "https://www.youtube.com/watch?v=YykjpeuMNEk", #
-        "https://www.youtube.com/watch?v=yKNxeF4KMsY", #
-        "https://www.youtube.com/watch?v=dvgZkm1xWPE", #
+        #"https://www.youtube.com/watch?v=YykjpeuMNEk", #
+        #"https://www.youtube.com/watch?v=yKNxeF4KMsY", #
+        #"https://www.youtube.com/watch?v=dvgZkm1xWPE", #
         "https://www.youtube.com/watch?v=1G4isv_Fylg", #
-        "https://www.youtube.com/watch?v=VPRjCeoBqrI", #
+        #"https://www.youtube.com/watch?v=VPRjCeoBqrI", #
         "https://www.youtube.com/watch?v=FM7MFYoylVs", #
-        "https://www.youtube.com/watch?v=RB-RcX5DS5A", #
-        "https://www.youtube.com/watch?v=QtXby3twMmI", #
-        "https://www.youtube.com/watch?v=d020hcWA_Wg", #
-        "https://www.youtube.com/watch?v=k4V3Mo61fJM", #
+        #"https://www.youtube.com/watch?v=RB-RcX5DS5A", #
+        #"https://www.youtube.com/watch?v=QtXby3twMmI", #
+        #"https://www.youtube.com/watch?v=d020hcWA_Wg", #
+        #"https://www.youtube.com/watch?v=k4V3Mo61fJM", #
+        "https://www.youtube.com/watch?v=Fpn1imb9qZg",
+        #"https://www.youtube.com/watch?v=gnIZ7RMuLpU",
+        #"https://www.youtube.com/watch?v=qhIVgSoJVRc",
+        #"https://www.youtube.com/watch?v=HHsHw3UTlqE",
+        "https://www.youtube.com/watch?v=yOW-X8kvpc8",
+        "https://www.youtube.com/watch?v=Rr0RIWNG-PQ"
     ],
     "mtns": [
         "https://www.youtube.com/watch?v=84BJGgZR914", #
@@ -382,28 +396,28 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=prmmCg5bKxA", #
     ],
     "led_zeppelin": [
-        "https://www.youtube.com/watch?v=QkF3oxziUI4", #
-        "https://www.youtube.com/watch?v=HQmmM_qwG4k", #
+        #"https://www.youtube.com/watch?v=QkF3oxziUI4", #
+        #"https://www.youtube.com/watch?v=HQmmM_qwG4k", #
         "https://www.youtube.com/watch?v=P3Y8OWkiUts", #
         "https://www.youtube.com/watch?v=PD-MdiUm1_Y", #
-        "https://www.youtube.com/watch?v=ceZfF84V6UY", #
-        "https://www.youtube.com/watch?v=yYDh7lyqwms", #
-        "https://www.youtube.com/watch?v=XIiu0JI3I5g", #
+        #"https://www.youtube.com/watch?v=ceZfF84V6UY", #
+        #"https://www.youtube.com/watch?v=yYDh7lyqwms", #
+        #"https://www.youtube.com/watch?v=XIiu0JI3I5g", #
         "https://www.youtube.com/watch?v=abw__u5w4A8", #
-        "https://www.youtube.com/watch?v=qyivczZI5pw", #
-        "https://www.youtube.com/watch?v=_h9MxNn8P7w", #
+        #"https://www.youtube.com/watch?v=qyivczZI5pw", #
+        #"https://www.youtube.com/watch?v=_h9MxNn8P7w", #
     ],
     "pink_floyd": [
-        "https://www.youtube.com/watch?v=KpfLHz_ufUQ", #
+        #"https://www.youtube.com/watch?v=KpfLHz_ufUQ", #
         "https://www.youtube.com/watch?v=HrxX9TBj2zY", #
         "https://www.youtube.com/watch?v=x-xTttimcNk", #
-        "https://www.youtube.com/watch?v=Qr0-7Ds79zo", #
-        "https://www.youtube.com/watch?v=mPGv8L3a_sY", #
-        "https://www.youtube.com/watch?v=jQcBwE6j09U", #
-        "https://www.youtube.com/watch?v=-0kcet4aPpQ", #
+        #"https://www.youtube.com/watch?v=Qr0-7Ds79zo", #
+        #"https://www.youtube.com/watch?v=mPGv8L3a_sY", #
+        #"https://www.youtube.com/watch?v=jQcBwE6j09U", #
+        #"https://www.youtube.com/watch?v=-0kcet4aPpQ", #
         "https://www.youtube.com/watch?v=7jMlFXouPk8", #
-        "https://www.youtube.com/watch?v=54W8kktFE_o", #
-        "https://www.youtube.com/watch?v=mrojrDCI02k", #
+        #"https://www.youtube.com/watch?v=54W8kktFE_o", #
+        #"https://www.youtube.com/watch?v=mrojrDCI02k", #
     ],
     "lauryn_hill": [
         "https://www.youtube.com/watch?v=cE-bnWqLqxE", #
@@ -448,7 +462,7 @@ VIDEO_URLS = {
         #"https://www.youtube.com/watch?v=VQAtYyKK9fw", #
         #"https://www.youtube.com/watch?v=-Ubyt7iWJ8Q", #
         "https://www.youtube.com/watch?v=VA770wpLX-Q", #
-        "https://www.youtube.com/watch?v=WdlyIH2DX60", #
+        #"https://www.youtube.com/watch?v=WdlyIH2DX60", #
         #"https://www.youtube.com/watch?v=Voz6-bo44f4", #
         #"https://www.youtube.com/watch?v=erJQha5ur_U", #
     ],
@@ -477,15 +491,15 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=S-2BMyZXK5o", #
     ],
     "ac_dc": [
-        "https://www.youtube.com/watch?v=v2AC41dglnM", #
-        "https://www.youtube.com/watch?v=pAgnJDJN4VA", #
+        #"https://www.youtube.com/watch?v=v2AC41dglnM", #
+        #"https://www.youtube.com/watch?v=pAgnJDJN4VA", #
         "https://www.youtube.com/watch?v=l482T0yNkeo", #
-        "https://www.youtube.com/watch?v=Lo2qQmj0_h4", #
+        #"https://www.youtube.com/watch?v=Lo2qQmj0_h4", #
         "https://www.youtube.com/watch?v=gEPmA3USJdI", #
         "https://www.youtube.com/watch?v=xRQnJyP77tY", #
         "https://www.youtube.com/watch?v=etAIpkdhU9Q", #
         "https://www.youtube.com/watch?v=n_GFN3a0yj0", #
-        "https://www.youtube.com/watch?v=PiZHNw1MtzI", #
+        #"https://www.youtube.com/watch?v=PiZHNw1MtzI", #
         "https://www.youtube.com/watch?v=NhsK5WExrnE", #
     ],
     "tim_mcgraw": [
@@ -524,50 +538,50 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=AHAE7Dw7yHM", #
         "https://www.youtube.com/watch?v=KEnFCa-5p9E", #
     ],
-    "js_bach": [
-        "https://www.youtube.com/watch?v=VkjW2oNb5TI",
-        "https://www.youtube.com/watch?v=sZJjVpU3hL0",
-        "https://www.youtube.com/watch?v=-UhOPXd-LYY",
-        "https://www.youtube.com/watch?v=i2e_o4i5WbM",
-        "https://www.youtube.com/watch?v=-77aIj0SSoI",
-        "https://www.youtube.com/watch?v=Ax9Mri7VRes",
-        "https://www.youtube.com/watch?v=ELRAD5oqbuM",
+    "bach": [
+        #"https://www.youtube.com/watch?v=VkjW2oNb5TI",
+        #"https://www.youtube.com/watch?v=sZJjVpU3hL0",
+        #"https://www.youtube.com/watch?v=-UhOPXd-LYY",
+        #"https://www.youtube.com/watch?v=i2e_o4i5WbM",
+        #"https://www.youtube.com/watch?v=-77aIj0SSoI",
+        #"https://www.youtube.com/watch?v=Ax9Mri7VRes",
+        #"https://www.youtube.com/watch?v=ELRAD5oqbuM",
         #"https://www.youtube.com/watch?v=rDVPiNe5cCU",
     ],
     "beethoven": [
         "https://www.youtube.com/watch?v=9_C6CTs0WhI",
-        "https://www.youtube.com/watch?v=_XG3h6LywNQ",
+        #"https://www.youtube.com/watch?v=_XG3h6LywNQ",
         "https://www.youtube.com/watch?v=KlrWjnzTnfw",
-        "https://www.youtube.com/watch?v=K_aXXMdzslU",
-        "https://www.youtube.com/watch?v=RbWP-jOwTFo",
+        #"https://www.youtube.com/watch?v=K_aXXMdzslU",
+        #"https://www.youtube.com/watch?v=RbWP-jOwTFo",
         "https://www.youtube.com/watch?v=lC0ncp6VE5s",
-        "https://www.youtube.com/watch?v=KgzXryrMMbw",
+        #"https://www.youtube.com/watch?v=KgzXryrMMbw",
         #"https://www.youtube.com/watch?v=MwszBQnvUqY",
-        "https://www.youtube.com/watch?v=uHXFb24FIZo",
+        #"https://www.youtube.com/watch?v=uHXFb24FIZo",
         #"https://www.youtube.com/watch?v=GS0tQE6RLik",
     ],
     "john_coltrane": [
-        "https://www.youtube.com/watch?v=ej6gfL4yF4E", #
-        "https://www.youtube.com/watch?v=9Zyr0IDaRXQ", #
+        #"https://www.youtube.com/watch?v=ej6gfL4yF4E", #
+        #"https://www.youtube.com/watch?v=9Zyr0IDaRXQ", #
         "https://www.youtube.com/watch?v=K2kp2AiB3Ak", #
-        "https://www.youtube.com/watch?v=-81BzBWGXZM", #
-        "https://www.youtube.com/watch?v=KwIC6B_dvW4", #
-        "https://www.youtube.com/watch?v=fue4mYwJjeU", #
-        "https://www.youtube.com/watch?v=NLGlnSUkjVo", #
+        #"https://www.youtube.com/watch?v=-81BzBWGXZM", #
+        #"https://www.youtube.com/watch?v=KwIC6B_dvW4", #
+        #"https://www.youtube.com/watch?v=fue4mYwJjeU", #
+        #"https://www.youtube.com/watch?v=NLGlnSUkjVo", #
         "https://www.youtube.com/watch?v=3w-oeQFo6Hk", #
-        "https://www.youtube.com/watch?v=vMCHDC2Lurk", #
+        #"https://www.youtube.com/watch?v=vMCHDC2Lurk", #
         "https://www.youtube.com/watch?v=rUpsutZTilo", #
     ],
     "miles_davis": [
         #"https://www.youtube.com/watch?v=ylXk1LBvIqU", #
-        "https://www.youtube.com/watch?v=TLDflhhdPCg", #
+        #"https://www.youtube.com/watch?v=TLDflhhdPCg", #
         "https://www.youtube.com/watch?v=ZZcuSBouhVA", #
         #"https://www.youtube.com/watch?v=CieM9gurwZ4", #
         #"https://www.youtube.com/watch?v=VLEj7E8ORU4", #
         #"https://www.youtube.com/watch?v=zqNTltOGh5c", #
         "https://www.youtube.com/watch?v=-488UORrfJ0", #
         #"https://www.youtube.com/watch?v=2CgEP7RciHo", #
-        "https://www.youtube.com/watch?v=p70s7LtbtMg", #
+        #"https://www.youtube.com/watch?v=p70s7LtbtMg", #
         #"https://www.youtube.com/watch?v=k94zDsJ-JMU", #
     ],
     "aretha_franklin": [
@@ -583,7 +597,8 @@ VIDEO_URLS = {
         "https://www.youtube.com/watch?v=5-7ublizwZ0", #
     ],
 
-
+    #"duke_ellington":[
+    #]
 
 
     #"_____": [

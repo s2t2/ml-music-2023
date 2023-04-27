@@ -1,11 +1,9 @@
 
 # Notes
 
-
-
 ## GTZAN Dataset
 
-## Provided Features
+### Provided Features
 
 ```
 
