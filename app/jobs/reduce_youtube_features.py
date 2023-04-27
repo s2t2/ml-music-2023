@@ -19,6 +19,7 @@ from app.audio_processor import TRACK_LENGTH, N_MFCC
 
 N_COMPONENTS = int(os.getenv("N_COMPONENTS", default="2"))
 X_SCALE = bool(os.getenv("X_SCALE", default="true") == "true")
+FIG_SHOW = bool(os.getenv("FIG_SHOW", default="false") == "true")
 
 LABEL_COLS = ["artist_name", "video_id", "audio_filename", "track_number", "track_length"]
 
@@ -27,7 +28,9 @@ LABEL_COLS = ["artist_name", "video_id", "audio_filename", "track_number", "trac
 class ReductionPipeline:
     def __init__(self, df, label_cols=LABEL_COLS, y_col="artist_name", x_scale=X_SCALE,
                         reducer_type="PCA", n_components=N_COMPONENTS,
-                        track_length=TRACK_LENGTH, n_mfcc=N_MFCC, chart=True):
+                        track_length=TRACK_LENGTH, n_mfcc=N_MFCC,
+                        fig_show=FIG_SHOW #, fig_save=True
+                        ):
 
         self.df = df
         self.labels_df = self.df[label_cols]
@@ -41,7 +44,8 @@ class ReductionPipeline:
         self.reducer_type = reducer_type
         self.n_components = n_components
 
-        self.chart = chart
+        self.fig_show = fig_show
+        #self.fig_save = fig_save
         self.track_length = track_length
         self.n_mfcc = n_mfcc
 
@@ -84,9 +88,8 @@ class ReductionPipeline:
         self.loadings = self.pca.components_.T * np.sqrt(self.pca.explained_variance_)
         self.loadings_df = DataFrame(self.loadings)
 
-        if self.chart:
-            self.plot_embeddings()
-            self.plot_embedding_centroids()
+        self.plot_embeddings()
+        self.plot_embedding_centroids()
 
     @property
     def results_dirpath(self):
@@ -122,13 +125,15 @@ class ReductionPipeline:
 
         if self.n_components == 2:
             fig = px.scatter(self.embeddings_df, **chart_params)
-            fig.show()
+            if self.show:
+                fig.show()
             #fig.write_image(self.embeddings_png_filepath)
             fig.write_html(self.embeddings_html_filepath)
         elif self.n_components ==3:
             chart_params["z"] = "component_3"
             fig = px.scatter_3d(self.embeddings_df, **chart_params)
-            fig.show()
+            if self.show:
+                fig.show()
             fig.write_html(self.embeddings_html_filepath)
 
 
@@ -149,17 +154,23 @@ class ReductionPipeline:
             artist_centroids = self.embeddings_df.groupby("artist_name").agg(agg_params)
             artist_centroids["artist_name"] = artist_centroids.index
             fig = px.scatter(artist_centroids, **chart_params)
+            fig.update_traces(textposition='top center')
+            if self.show:
+                fig.show()
+            fig.write_image(self.centroids_png_filepath)
+            fig.write_html(self.centroids_html_filepath)
+
         elif self.n_components ==3:
             chart_params["z"] = "component_3"
             agg_params["component_3"] = "mean"
             artist_centroids = self.embeddings_df.groupby("artist_name").agg(agg_params)
             artist_centroids["artist_name"] = artist_centroids.index
             fig = px.scatter_3d(artist_centroids, **chart_params)
-
-        if fig:
             fig.update_traces(textposition='top center')
-            fig.show()
-            fig.write_image(self.centroids_png_filepath)
+            if self.show:
+                fig.show()
+            fig.write_html(self.centroids_html_filepath)
+
 
 
 

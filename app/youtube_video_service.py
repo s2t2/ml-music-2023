@@ -19,17 +19,19 @@ from app.image_service import ImageService
 
 
 VIDEO_URL = os.getenv("VIDEO_URL", default="https://www.youtube.com/watch?v=q6HiZIQoLSU")
-
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", default=10))
+VERBOSE = bool(os.getenv("VERBOSE", default="false") == "true")
 
 class YoutubeVideoService():
 
     def __init__(self, video_url=VIDEO_URL, artist_name=None):
         self.video_url = video_url
         self.artist_name = artist_name
+        #self.max_attempts = max_attempts
         self.audio_filepath = None
 
     @cached_property
-    def video(self, max_attempts=5):
+    def video(self, max_attempts=MAX_ATTEMPTS):
         """returns the video or none?"""
         n_attempts = 0
         while n_attempts < max_attempts:
@@ -39,10 +41,13 @@ class YoutubeVideoService():
             try:
                 #raise PytubeError("OOPS")
                 v = Video(self.video_url)
+                # https://github.com/pytube/pytube/issues/1473
+                # https://github.com/pytube/pytube/issues/1545
                 v.title
                 return v
             except (PytubeError, KeyError) as err:
-                #print("ERROR:", err)
+                if VERBOSE:
+                    print("... ERROR:", err)
                 sleep(1)
 
     @cached_property

@@ -1,6 +1,6 @@
 
 # downloading audio from youtube:
-pytube
+pytube # 12.1.3
 
 # displaying images / playing audio:
 IPython
@@ -12,8 +12,8 @@ kaleido # for exporting plotly images to png / html
 
 # processing / playing audio:
 #simpleaudio
-librosa
-soundfile
+librosa # 0.10.0.post2
+soundfile # 0.12.1
 #pyaudio
 
 # data processing:
