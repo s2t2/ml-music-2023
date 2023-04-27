@@ -16,7 +16,17 @@ data/gtzan/
 
 
 
-results/youtube/*/*
+results/youtube/length_3_mfcc_8
+#results/youtube/length_3_mfcc_13
+results/youtube/length_3_mfcc_20
+
+results/youtube/length_15_mfcc_8
+results/youtube/length_15_mfcc_13
+results/youtube/length_15_mfcc_20
+
+results/youtube/length_30_mfcc_8
+#results/youtube/length_30_mfcc_13
+results/youtube/length_30_mfcc_20
 
 
 
