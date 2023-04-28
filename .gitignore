@@ -9,12 +9,14 @@ data/gtzan/images_original/*/*.png
 data/youtube/audio/*/*/*.mp4
 data/youtube/audio/*/*/*.json
 
-data/youtube/*/*.csv
-data/youtube/*/*.json
+#data/youtube/*/*.csv
+#data/youtube/*/*.json
 
 data/gtzan/
 
 *.zip
+data/youtube/features_v0
+
 
 results/youtube/length_3_mfcc_8
 #results/youtube/length_3_mfcc_13
