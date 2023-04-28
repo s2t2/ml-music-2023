@@ -14,7 +14,7 @@ data/youtube/*/*.json
 
 data/gtzan/
 
-
+*.zip
 
 results/youtube/length_3_mfcc_8
 #results/youtube/length_3_mfcc_13

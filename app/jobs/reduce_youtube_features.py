@@ -125,14 +125,14 @@ class ReductionPipeline:
 
         if self.n_components == 2:
             fig = px.scatter(self.embeddings_df, **chart_params)
-            if self.show:
+            if self.fig_show:
                 fig.show()
             #fig.write_image(self.embeddings_png_filepath)
             fig.write_html(self.embeddings_html_filepath)
         elif self.n_components ==3:
             chart_params["z"] = "component_3"
             fig = px.scatter_3d(self.embeddings_df, **chart_params)
-            if self.show:
+            if self.fig_show:
                 fig.show()
             fig.write_html(self.embeddings_html_filepath)
 
@@ -155,7 +155,7 @@ class ReductionPipeline:
             artist_centroids["artist_name"] = artist_centroids.index
             fig = px.scatter(artist_centroids, **chart_params)
             fig.update_traces(textposition='top center')
-            if self.show:
+            if self.fig_show:
                 fig.show()
             fig.write_image(self.centroids_png_filepath)
             fig.write_html(self.centroids_html_filepath)
@@ -167,7 +167,7 @@ class ReductionPipeline:
             artist_centroids["artist_name"] = artist_centroids.index
             fig = px.scatter_3d(artist_centroids, **chart_params)
             fig.update_traces(textposition='top center')
-            if self.show:
+            if self.fig_show:
                 fig.show()
             fig.write_html(self.centroids_html_filepath)
 
@@ -217,13 +217,18 @@ if __name__ == "__main__":
     ds = YoutubeDataset()
 
     component_nums = [2 , 3]
+    #params_grid = [
+    #    # (track_length, n_mfcc)
+    #    (3, 8), (3,13), (3,20),
+    #    #(10, 8), (10,13), (10,20),
+    #    #(15, 8), (15,13), (15,20),
+    #    #(20, 8), (20,13), (20,20),
+    #    (30, 8), (30,13), (30,20)
+    #]
     params_grid = [
         # (track_length, n_mfcc)
-        (3, 8), (3,13), (3,20),
-        #(10, 8), (10,13), (10,20),
-        #(15, 8), (15,13), (15,20),
-        #(20, 8), (20,13), (20,20),
-        (30, 8), (30,13), (30,20)
+        (3,13), #(3,20),
+        (30,13), # (30,20)
     ]
     for track_length, n_mfcc in params_grid:
 
