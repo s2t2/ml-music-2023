@@ -7,9 +7,13 @@ import numpy as np
 from functools import cached_property
 
 
-from sklearn.preprocessing import scale
 from pandas import DataFrame
+from sklearn.preprocessing import scale #, StandardScaler
+
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from umap import UMAP
+
 import plotly.express as px
 
 from app import RESULTS_DIRPATH
@@ -26,9 +30,8 @@ LABEL_COLS = ["artist_name", "video_id", "audio_filename", "track_number", "trac
 
 class ReductionPipeline:
     def __init__(self, df, label_cols=LABEL_COLS, y_col="artist_name", x_scale=X_SCALE,
-                        reducer_type="PCA", n_components=N_COMPONENTS,
-                        track_length=TRACK_LENGTH, n_mfcc=N_MFCC
-                        ):
+                        track_length=TRACK_LENGTH, n_mfcc=N_MFCC,
+                        reducer_type="PCA", n_components=N_COMPONENTS):
 
         self.df = df
         self.labels_df = self.df[label_cols]
@@ -38,17 +41,17 @@ class ReductionPipeline:
         print("Y:", len(self.y))
 
         self.x_scale = x_scale
-
+        self.track_length = track_length
+        self.n_mfcc = n_mfcc
         self.reducer_type = reducer_type
         self.n_components = n_components
 
-        self.track_length = track_length
-        self.n_mfcc = n_mfcc
-
+        self.reducer = None
         self.embeddings = None
         self.embeddings_df = None
         self.loadings = None
         self.loadings_df = None
+
 
     @cached_property
     def feature_names(self):
@@ -71,26 +74,36 @@ class ReductionPipeline:
         else:
             x = self.x
 
-        self.pca = PCA(n_components=self.n_components, random_state=99)
+        if self.reducer_type == "PCA":
+            self.reducer = PCA(n_components=self.n_components, random_state=99)
+        elif self.reducer_type == "T-SNE":
+            self.reducer = TSNE(n_components=self.n_components, random_state=99)
+        elif self.reducer_type == "UMAP":
+            self.reducer = UMAP(n_components=self.n_components, random_state=99)
 
-        self.embeddings = self.pca.fit_transform(x)
+        self.embeddings = self.reducer.fit_transform(x)
         print("EMBEDDINGS:", type(self.embeddings), self.embeddings.shape)
         self.embeddings_df = DataFrame(self.embeddings, columns=self.component_names)
         self.embeddings_df = self.embeddings_df.merge(self.labels_df, left_index=True, right_index=True)
 
-        print("EXPLAINED VARIANCE RATIO:", self.pca.explained_variance_ratio_)
-        print("SINGULAR VALS:", self.pca.singular_values_)
+        # EXPLAINABILITY:
+        if self.reducer_type == "PCA":
+            print("EXPLAINED VARIANCE RATIO:", self.reducer.explained_variance_ratio_)
+            print("SINGULAR VALS:", self.reducer.singular_values_)
 
-        self.loadings = self.pca.components_.T * np.sqrt(self.pca.explained_variance_)
-        print("LOADINGS...", type(self.loadings), self.loadings.shape)
-        self.loadings_df = DataFrame(self.loadings, columns=self.component_names)
-        self.loadings_df.index = self.pca.feature_names_in_
+            self.loadings = self.reducer.components_.T * np.sqrt(self.reducer.explained_variance_)
+            print("LOADINGS...", type(self.loadings), self.loadings.shape)
+            self.loadings_df = DataFrame(self.loadings, columns=self.component_names)
+            self.loadings_df.index = self.reducer.feature_names_in_
 
-        # these represent the absolute magnitude of importances, not direction up or down
-        self.feature_importances = {}
-        for component_name in self.component_names:
-            top_feature_names = self.loadings_df.abs().sort_values(by=[component_name], ascending=False).head(10)[component_name]
-            self.feature_importances[component_name] = top_feature_names.to_dict()
+            # these represent the absolute magnitude of importances, not direction up or down
+            self.feature_importances = {}
+            for component_name in self.component_names:
+                top_feature_names = self.loadings_df.abs().sort_values(by=[component_name], ascending=False).head(10)[component_name]
+                self.feature_importances[component_name] = top_feature_names.to_dict()
+
+        elif self.reducer_type == "T-SNE":
+            print("K-L DIVERGENCE:", self.reducer.kl_divergence_)
 
 
 
@@ -212,3 +225,7 @@ class ReductionPipeline:
 #            markers="line+point", color_discrete_sequence=["steelblue"]
 #    )
 #    fig.show()
+
+
+
+        print("K-L DIVERGENCE:", self.tsne.kl_divergence_)

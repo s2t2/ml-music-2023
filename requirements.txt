@@ -24,7 +24,7 @@ numpy
 scikit-learn
 category_encoders
 tensorflow
-#umap
+umap-learn
 
 
 

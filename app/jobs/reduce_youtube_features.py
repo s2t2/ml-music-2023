@@ -50,14 +50,36 @@ if __name__ == "__main__":
             print(df.columns.tolist())
 
             for n_components in component_nums:
+
+                # PCA
+
                 pca_pipeline = ReductionPipeline(df,
-                    track_length=track_length,
-                    n_mfcc=n_mfcc,
-                    n_components=n_components
+                    track_length=track_length, n_mfcc=n_mfcc,
+                    reducer_type="PCA", n_components=n_components
                 )
                 pca_pipeline.perform()
                 pca_pipeline.plot_embeddings()
                 pca_pipeline.plot_embedding_centroids()
+
+                # T-SNE
+
+                tsne_pipeline = pca_pipeline = ReductionPipeline(df,
+                    track_length=track_length, n_mfcc=n_mfcc,
+                    reducer_type="T-SNE", n_components=n_components
+                )
+                tsne_pipeline.perform()
+                tsne_pipeline.plot_embeddings()
+                tsne_pipeline.plot_embedding_centroids()
+
+                # UMAP
+
+                umap_pipeline = pca_pipeline = ReductionPipeline(df,
+                    track_length=track_length, n_mfcc=n_mfcc,
+                    reducer_type="UMAP", n_components=n_components
+                )
+                umap_pipeline.perform()
+                umap_pipeline.plot_embeddings()
+                umap_pipeline.plot_embedding_centroids()
         except Exception as err:
             print("OOPS:", err)
 
