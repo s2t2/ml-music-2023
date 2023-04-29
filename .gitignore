@@ -15,6 +15,7 @@ data/youtube/audio/*/*/*.json
 data/gtzan/
 
 *.zip
+data/youtube/features
 data/youtube/features_v0
 
 

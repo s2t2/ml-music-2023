@@ -1,7 +1,6 @@
 import os
 from pytest import fixture
 
-
 from app.audio_processor import AudioProcessor
 
 
