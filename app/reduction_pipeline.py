@@ -46,6 +46,8 @@ class ReductionPipeline:
         self.reducer_type = reducer_type
         self.n_components = n_components
 
+        self.reducer_name = {"PCA": "pca", "T-SNE": "tsne", "UMAP": "umap"}[self.reducer_type]
+
         self.reducer = None
         self.embeddings = None
         self.embeddings_df = None
@@ -115,19 +117,19 @@ class ReductionPipeline:
 
     @property
     def embeddings_png_filepath(self):
-        return os.path.join(self.results_dirpath, f"pca_{self.n_components}.png")
+        return os.path.join(self.results_dirpath, f"{self.reducer_name}_{self.n_components}.png")
 
     @property
     def embeddings_html_filepath(self):
-        return os.path.join(self.results_dirpath, f"pca_{self.n_components}.html")
+        return os.path.join(self.results_dirpath, f"{self.reducer_name}_{self.n_components}.html")
 
     @property
     def centroids_png_filepath(self):
-        return os.path.join(self.results_dirpath, f"pca_{self.n_components}_centroids.png")
+        return os.path.join(self.results_dirpath, f"{self.reducer_name}_{self.n_components}_centroids.png")
 
     @property
     def centroids_html_filepath(self):
-        return os.path.join(self.results_dirpath, f"pca_{self.n_components}_centroids.html")
+        return os.path.join(self.results_dirpath, f"{self.reducer_name}_{self.n_components}_centroids.html")
 
 
     def plot_embeddings(self, height=500, fig_show=FIG_SHOW, fig_save=FIG_SAVE):
