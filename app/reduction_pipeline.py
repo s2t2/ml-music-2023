@@ -17,6 +17,7 @@ from umap import UMAP
 import plotly.express as px
 
 from app import RESULTS_DIRPATH
+from app.youtube_dataset import YoutubeDataset
 from app.audio_processor import TRACK_LENGTH, N_MFCC
 
 N_COMPONENTS = int(os.getenv("N_COMPONENTS", default="2"))
@@ -196,38 +197,123 @@ class ReductionPipeline:
 
 
 
+class Tuner:
+
+    def __init__(self):
+        self.results = []
+        self.results_df = DataFrame()
 
 
-#def plot_explained_variance(pca_results):
-#    pca_results_df = DataFrame(pca_results)
-#
-#    title = f"""Total Explained Variance by Number of Components (PCA)
-#    <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
-#    """
-#    fig = px.line(pca_results_df, x="n_components", y="explained_variance",
-#            title=title,
-#            markers="line+point", color_discrete_sequence=["steelblue"]
-#    )
-#    fig.show()
+    def perform(self):
+        results = []
+        for n_components in range(1, len(ds.x.columns)+1):
 
+            pipeline = ReductionPipeline(reducer_type="PCA", n_components=n_components)
+            pipeline.perform()
 
-#def plot_scree(pca_results_df):
-#    eigenvals = pca_results_df.sort_values(by=["n_components"], ascending=False).iloc[0]["eigenvals"]
-#    print("EIGENVALS:", eigenvals)
-#
-#    component_numbers = list(range(1, len(pca_results_df)+1))
-#    print("COMPONENT NUMBERS:", component_numbers)
-#
-#    title=f"""Scree Plot of Eigenvalues by Component (PCA)
-#    <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
-#    """
-#    fig = px.line(x=component_numbers, y=eigenvals,
-#            title=title,
-#            labels={"x": "Component Number", "y": "Eigenvalue"},
-#            markers="line+point", color_discrete_sequence=["steelblue"]
-#    )
-#    fig.show()
+            pca = pipeline.reducer
+            results.append({
+                "n_components": n_components,
+                "explained_variance": pca.explained_variance_ratio_.sum(),
+                "eigenvals": pca.explained_variance_, # number of vals depend on n components
+                #"loadings": loadings,
+                #"embeddings": embeddings
+            })
+
+        self.results_df = DataFrame(results)
+        print(self.results_df[["n_components", "explained_variance"]].head())
 
 
 
-        print("K-L DIVERGENCE:", self.tsne.kl_divergence_)
+    def plot_explained_variance(self):
+        title = f"""
+            Total Explained Variance by Number of Components (PCA)
+            <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
+        """
+
+        fig = px.line(self.pca_results_df, x="n_components", y="explained_variance",
+                title=title,
+                markers="line+point", color_discrete_sequence=["steelblue"]
+        )
+        fig.show()
+
+
+    def plot_scree(self):
+        eigenvals = self.pca_results_df.sort_values(by=["n_components"], ascending=False).iloc[0]["eigenvals"]
+        print("EIGENVALS:", eigenvals)
+
+        component_numbers = list(range(1, len(self.pca_results_df)+1))
+        print("COMPONENT NUMBERS:", component_numbers)
+
+        title=f"""
+            Scree Plot of Eigenvalues by Component (PCA)
+            <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
+        """
+        fig = px.line(x=component_numbers, y=eigenvals,
+                title=title,
+                labels={"x": "Component Number", "y": "Eigenvalue"},
+                markers="line+point", color_discrete_sequence=["steelblue"]
+        )
+        fig.show()
+
+
+
+if __name__ == "__main__":
+
+
+    ds = YoutubeDataset()
+    df = ds.read_features_csv(track_length=TRACK_LENGTH, n_mfcc=N_MFCC)
+
+    # todo: get this more dynamically
+    label_cols = ['artist_name', 'video_id', 'audio_filename', 'track_number', 'track_length']
+    feature_names = df.drop(columns=label_cols).columns.tolist()
+
+    results = []
+    for n_components in range(1, len(feature_names)+1):
+        pipeline = ReductionPipeline(df, reducer_type="PCA", n_components=n_components)
+        pipeline.perform()
+
+        pca = pipeline.reducer
+        results.append({
+            "n_components": n_components,
+            "explained_variance": pca.explained_variance_ratio_.sum(),
+            "eigenvals": pca.explained_variance_, # number of vals depend on n components
+            #"loadings": loadings,
+            #"embeddings": embeddings
+        })
+    results_df = DataFrame(results)
+    print(results_df[["n_components", "explained_variance"]].head())
+
+
+
+
+    title = f"""Total Explained Variance by Number of Components (PCA)
+    <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
+    """
+    fig = px.line(results_df, x="n_components", y="explained_variance",
+            title=title,
+            markers="line+point", color_discrete_sequence=["steelblue"]
+    )
+    fig.show()
+    #fig.write_image(____________)
+
+
+
+
+
+    eigenvals = results_df.sort_values(by=["n_components"], ascending=False).iloc[0]["eigenvals"]
+    print("EIGENVALS:", eigenvals)
+
+    component_numbers = list(range(1, len(results_df)+1))
+    print("COMPONENT NUMBERS:", component_numbers)
+
+    title=f"""Scree Plot of Eigenvalues by Component (PCA)
+    <br><sup>Data: {TRACK_LENGTH}s tracks, {N_MFCC} MFCCs</sup>
+    """
+    fig = px.line(x=component_numbers, y=eigenvals,
+            title=title,
+            labels={"x": "Component Number", "y": "Eigenvalue"},
+            markers="line+point", color_discrete_sequence=["steelblue"]
+    )
+    fig.show()
+    #fig.write_image(____________)
