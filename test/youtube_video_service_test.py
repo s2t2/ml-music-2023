@@ -1,7 +1,16 @@
+
+import os
+import pytest
+
 from pytube import YouTube as Video
 
 from app.youtube_video_service import YoutubeVideoService #, split_into_batches
 
+
+CI_ENV = bool(os.getenv("CI")=="true")
+
+
+@pytest.mark.skipif(CI_ENV, reason="avoid issuing HTTP requests on the CI server")
 def test_video_service():
 
     yt = YoutubeVideoService()

@@ -9,4 +9,4 @@ def test_genres():
 
     assert ds.genres == ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 
-    assert len(ds.audio_filepaths) == 1000
+    assert len(ds.audio_files) == 1000
