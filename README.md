@@ -3,6 +3,7 @@
 Machine Learning for Music
 
 
+## Background
 
 The "Artist Similarity Mapping" project uses dimensionality reduction on audio data from YouTube to determine which artists are most similar to each other (based on actual audio qualities). Music platforms can use these methods for artist recommendation purposes. :musical_note: :studio_microphone:
 
@@ -10,6 +11,7 @@ The "Artist Similarity Mapping" project uses dimensionality reduction on audio d
   + [Code](https://github.com/s2t2/ml-music-2023)
   + [Results Site](https://s2t2.github.io/ml-music-2023/)
   + [Methods Demo Notebook](https://github.com/s2t2/ml-music-2023/blob/main/notebooks/youtube/Artist_Similarity_Mapping_METHODS_DEMO_20230428.ipynb)
+  + [Talk](https://youtu.be/c80v9V9k0Bo)
 
 Enjoy!
 
