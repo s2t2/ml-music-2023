@@ -5,7 +5,7 @@ from pandas import read_csv
 from pytest import fixture
 
 
-from app.reduction_pipeline import ReductionPipeline
+from app.reduction_pipeline import ReductionPipeline, PCATuner
 
 
 TRACK_LENGTH = 30
@@ -93,3 +93,16 @@ def test_umap_pipeline(audio_features_df):
     )
     pipeline.perform()
     verify_embeddings(pipeline)
+
+
+
+
+
+
+def test_pca_tuner(audio_features_df):
+
+    tuner = PCATuner(audio_features_df, track_length=TRACK_LENGTH, n_mfcc=N_MFCC)
+
+    assert "perform" in dir(tuner)
+    assert "plot_explained_variance" in dir(tuner)
+    assert "plot_scree" in dir(tuner)
