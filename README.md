@@ -1,4 +1,4 @@
-# ml-music
+# ml-music-2023
 
 Machine Learning for Music
 
@@ -15,7 +15,7 @@ The "Artist Similarity Mapping" project uses dimensionality reduction on audio d
 
 Enjoy!
 
-![newplot (14)](https://user-images.githubusercontent.com/1328807/235217641-b2bda492-102f-465c-8f04-681c460cdd5f.png)
+![newplot (14)](https://user-images.githubusercontent.com/1328807/235800032-4138e4fa-793d-4369-8378-4c5d65e198f2.png)
 
 
 
