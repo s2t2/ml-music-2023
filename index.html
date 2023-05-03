@@ -17,7 +17,7 @@
 
         <h2>Artist Similarity Mapping</h2>
 
-        <h3>Dimensionality Reduction</h3>
+        <h3>Dimensionality Reduction Results</h3>
 
         <!--select name="track_length" id="track-length-selector">
             <option value="3">3 second tracks</option>
@@ -39,50 +39,63 @@
             <option value="3">3 components</option>
         </select-->
 
-        <!--ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Active</a>
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 30px; margin-bottom: 15px;">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                    Two Components
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    Three Components
+                </button>
             </li>
-        </ul-->
-
-        <p class="lead">Two Components</p>
-        <div class="table-responsive">
-            <table class="table" id="results-table-2">
-                <thead>
-                    <tr>
-                        <th>Track Length</th>
-                        <th>Num MFCCs</th>
-                        <th>Reduction Method</th>
-                        <th>Num Components</th>
-                        <th>Embeddings</th>
-                        <th>Centroids</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
 
-        <p class="lead">Three Components</p>
-        <div class="table-responsive">
-            <table class="table" id="results-table-3">
-                <thead>
-                    <tr>
-                        <th>Track Length</th>
-                        <th>Num MFCCs</th>
-                        <th>Reduction Method</th>
-                        <th>Num Components</th>
-                        <th>Embeddings</th>
-                        <th>Centroids</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                <div class="table-responsive">
+                    <table class="table" id="results-table-2">
+                        <thead>
+                            <tr>
+                                <th>Track Length</th>
+                                <th>Num MFCCs</th>
+                                <th>Reduction Method</th>
+                                <th>Num Components</th>
+                                <th>Embeddings</th>
+                                <th>Centroids</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+
+                <div class="table-responsive">
+                    <table class="table" id="results-table-3">
+                        <thead>
+                            <tr>
+                                <th>Track Length</th>
+                                <th>Num MFCCs</th>
+                                <th>Reduction Method</th>
+                                <th>Num Components</th>
+                                <th>Embeddings</th>
+                                <th>Centroids</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
         </div>
 
         <footer>
