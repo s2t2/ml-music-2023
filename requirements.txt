@@ -15,6 +15,7 @@ kaleido # for exporting plotly images to png / html
 librosa # 0.10.0.post2
 soundfile # 0.12.1
 #pyaudio
+spleeter
 
 # data processing:
 pandas
