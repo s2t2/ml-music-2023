@@ -1,8 +1,13 @@
 
+
+import pytest
+
 from app.gtzan_dataset import GenreDataset
 
+from conftest import CI_ENV
 
 
+@pytest.mark.skipif(CI_ENV, reason="avoid issuing HTTP requests on the CI server")
 def test_genres():
 
     ds = GenreDataset()

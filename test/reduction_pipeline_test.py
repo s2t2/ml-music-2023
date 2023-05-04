@@ -13,7 +13,7 @@ N_MFCC = 13
 
 @fixture
 def audio_features_df():
-    csv_filepath = f"https://github.com/s2t2/ml-music-2023/raw/main/data/youtube/features/length_{TRACK_LENGTH}_mfcc_{N_MFCC}_features.csv"
+    csv_filepath = f"https://github.com/s2t2/ml-music-2023/raw/main/data/youtube/features_v1/length_{TRACK_LENGTH}_mfcc_{N_MFCC}_features.csv"
     return read_csv(csv_filepath)
 
 
