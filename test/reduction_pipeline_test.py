@@ -1,6 +1,6 @@
 
 
-
+import numpy as np
 from pandas import read_csv
 from pytest import fixture
 
@@ -36,9 +36,9 @@ def test_pca_pipeline(audio_features_df):
     verify_embeddings(pipeline)
 
     pca = pipeline.reducer
-    assert pca.explained_variance_.tolist() == [8.980046729035566, 7.014918995282904]
-    assert pca.explained_variance_ratio_.tolist() == [0.21890505388738124, 0.17100147326771628]
-    assert pca.singular_values_.tolist() == [127.73701463028492, 112.89866170344553]
+    assert np.allclose(pca.explained_variance_.tolist(), [8.980046729035566, 7.014918995282904])
+    assert np.allclose(pca.explained_variance_ratio_.tolist(), [0.21890505388738124, 0.17100147326771628])
+    assert np.allclose(pca.singular_values_.tolist(), [127.73701463028492, 112.89866170344553])
     assert pca.feature_names_in_.tolist() == feature_names
 
     loadings = pipeline.loadings
