@@ -12,9 +12,22 @@ kaleido # for exporting plotly images to png / html
 
 # processing / playing audio:
 #simpleaudio
-librosa # 0.10.0.post2
+librosa #==0.10.0.post2   # 0.8.1
 soundfile # 0.12.1
 #pyaudio
+spleeter #==2.3.2  #==2.3.0
+
+# The conflict is caused by:
+# The user requested librosa==0.10.0.post2
+# spleeter 2.3.2 depends on librosa<0.9.0 and >=0.8.0
+# The user requested tensorflow
+# spleeter 2.1.0 depends on tensorflow==2.3.0
+
+# spleeter looks like it has strict and conflicting requirements,
+# so we will use it temporarily to produce the split audio tracks, and save them.
+# then we will use the newer version of librosa to process the audio files.
+# disadantage: requires more file storage space. advantage: it is a solution forward.
+
 
 # data processing:
 pandas

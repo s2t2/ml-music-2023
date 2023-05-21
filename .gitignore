@@ -18,6 +18,8 @@ data/gtzan/
 data/youtube/features
 data/youtube/features_v0
 
+# this is a spleeter package thing:
+pretrained_models/
 
 results/youtube/length_3_mfcc_8
 #results/youtube/length_3_mfcc_13
