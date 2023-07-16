@@ -26,7 +26,7 @@ Enjoy!
 
 ```sh
 conda create -n ml-music python=3.10
-conda activate
+conda activate ml-music
 ```
 
 ```sh
