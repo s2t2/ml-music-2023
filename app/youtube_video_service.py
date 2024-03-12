@@ -64,6 +64,7 @@ class YoutubeVideoService():
             default_artist_name = self.video.author.lower()
             self.artist_name = input(f"What is the artist name you would like to save this video under ({default_artist_name})? ") or default_artist_name
 
+        # todo: get dirpath from the dataset instead
         dirpath = os.path.join(YOUTUBE_AUDIO_DIRPATH, self.artist_name, self.video.video_id)
         os.makedirs(dirpath, exist_ok=True)
         return dirpath

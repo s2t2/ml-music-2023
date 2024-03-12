@@ -79,6 +79,8 @@ TRACK_LENGTH=30 N_MFCC=13 python -m app.jobs.train_gtzan_nn
 
 ### YouTube
 
+#### Dataset Collection
+
 Test the YouTube service on one video:
 
 ```sh
@@ -91,6 +93,7 @@ Download audio files for the specified YouTube video URLs:
 ARTIST_NAME="________" MAX_RETRIES=50 python -m app.jobs.download_youtube_audio
 ```
 
+#### Features v1
 
 Generate audio features data from the raw audio files, specifying the track length in seconds, as well as the number of MFCCs:
 
@@ -104,13 +107,19 @@ TRACK_LENGTH=30 N_MFCC=13 MAX_THREADS=10 python -m app.jobs.process_youtube_audi
 TRACK_LENGTH=30 N_MFCC=20 MAX_THREADS=10 python -m app.jobs.process_youtube_audio_async
 ```
 
-
 Perform dimensionality reduction on the audio features to obtain song embeddings, and plot them in two or three dimensions:
 
 ```sh
 python -m app.jobs.reduce_youtube_features
 ```
 
+#### Features v2
+
+Generate features based on audio that has been split into N number of stems (2, 4, or 5):
+
+```sh
+TRACK_LENGTH=30 N_MFCC=13 N_STEMS=5 python -m app.jobs.split_youtube_audio
+```
 
 
 ## Testing
